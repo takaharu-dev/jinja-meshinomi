@@ -1,0 +1,271 @@
+/* デザイン案「朱 × 白、アクセントに榊と黒」の最終形 */
+:root {
+  --shu: #e9524e;
+  --sakaki: #4a6b3a;
+  --ink: #1a1a1a;
+  --sub: #666;
+  --muted: #999;
+  --line: #e5e5e5;
+  --line-strong: #ddd;
+  --cream: #faf7f2;
+  --cream-line: #eee7dd;
+  --cream-ring: #e5dccf;
+  --img: #f2f2f2;
+  --white: #fff;
+
+  --container: 1200px;
+  --gutter: 32px;
+  --f: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--f);
+  font-size: 14px;
+  line-height: 1.6;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+:focus-visible {
+  outline: 2px solid var(--shu);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- 共通パーツ ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--shu);
+  border-radius: 4px;
+  background: var(--shu);
+  color: var(--white);
+  font-weight: 700;
+  padding: 10px 22px;
+  white-space: nowrap;
+}
+.btn--sm {
+  padding: 7px 16px;
+  font-size: 13px;
+}
+.btn--ghost {
+  background: var(--white);
+  color: var(--shu);
+}
+
+.tag {
+  display: inline-block;
+  background: var(--white);
+  color: var(--sakaki);
+  border: 1px solid var(--sakaki);
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+}
+
+.ph {
+  display: grid;
+  place-items: center;
+  background: var(--img);
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 22px;
+  white-space: nowrap;
+}
+.logo svg {
+  flex: none;
+}
+
+/* ---------- ヘッダー（PC） ---------- */
+.util {
+  border-bottom: 1px solid var(--shu);
+  color: var(--shu);
+  font-size: 11px;
+}
+.util .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 6px;
+}
+.util__lead {
+  color: var(--ink);
+}
+
+.hd .container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-block: 14px;
+}
+.hd .logo {
+  color: var(--shu);
+}
+.msearch {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--shu);
+  border-radius: 4px;
+  padding: 4px 4px 4px 12px;
+}
+.msearch:focus-within {
+  box-shadow: 0 0 0 2px rgba(233, 82, 78, 0.25);
+}
+.msearch input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 13px;
+}
+.msearch input::placeholder {
+  color: var(--sub);
+}
+
+.gnav {
+  border-block: 1px solid var(--line);
+}
+.gnav .container {
+  display: flex;
+}
+.gnav a {
+  padding: 12px 22px;
+  font-weight: 700;
+}
+.gnav a:hover,
+.gnav a[aria-current="page"] {
+  color: var(--shu);
+}
+.gnav a[aria-current="page"] {
+  box-shadow: inset 0 -3px 0 var(--shu);
+}
+
+/* ---------- ヘッダー（スマホ） ---------- */
+.sph {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--shu);
+  color: var(--white);
+  padding: 12px 16px;
+}
+.sph .logo {
+  font-size: 18px;
+}
+.sph__icons {
+  display: flex;
+  gap: 16px;
+}
+.sph__icons button {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--white);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ---------- フッター ---------- */
+.ft {
+  background: var(--shu);
+  color: var(--white);
+}
+.ft .container {
+  padding-block: 32px;
+}
+.ft__cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 64px;
+}
+.ft__cols b {
+  display: block;
+  margin-bottom: 8px;
+}
+.ft__cols a {
+  display: block;
+  font-size: 12px;
+  line-height: 2;
+}
+.ft__cols a:hover {
+  text-decoration: underline;
+}
+.ft__bt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+.ft__bt .logo {
+  font-size: 18px;
+}
+
+.ftsp {
+  display: none;
+  flex-direction: column;
+  background: var(--shu);
+  color: var(--white);
+  padding: 16px;
+}
+.ftsp a {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 500;
+}
+
+/* ---------- スマホ ---------- */
+@media (max-width: 767px) {
+  :root {
+    --gutter: 16px;
+  }
+  .util,
+  .hd,
+  .gnav,
+  .ft {
+    display: none;
+  }
+  .sph,
+  .ftsp {
+    display: flex;
+  }
+}
