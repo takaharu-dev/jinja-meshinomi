@@ -8,7 +8,7 @@ import {
   useRouteError,
   type LoaderFunctionArgs,
 } from "react-router";
-import { fetchAreas, fetchShrine, fetchShrines, fetchTop, NotFoundError } from "./api";
+import { fetchAreas, fetchStations, fetchShrine, fetchShrines, fetchTop, NotFoundError } from "./api";
 import { loadSaved } from "./saved";
 import type { ShrineItem } from "./types";
 import SiteHeader from "./components/SiteHeader";
@@ -19,6 +19,7 @@ import ShrineDetailPage from "./pages/ShrineDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SavedPage from "./pages/SavedPage";
 import AreasPage from "./pages/AreasPage";
+import StationsPage from "./pages/StationsPage";
 
 // ---------- loader ----------
 // 画面を切り替える前にデータを取得する。取得中は今のページを表示したままにする。
@@ -41,6 +42,8 @@ export const shrineDetailLoader = ({ request, params }: LoaderFunctionArgs) =>
   load(fetchShrine(params.id ?? "", request.signal));
 
 export const areasLoader = ({ request }: LoaderFunctionArgs) => load(fetchAreas(request.signal));
+
+export const stationsLoader = ({ request }: LoaderFunctionArgs) => load(fetchStations(request.signal));
 
 /** 保存リスト：ブラウザに保存した ID で取得し、最近保存した順に並べる */
 export const savedLoader = async ({ request }: LoaderFunctionArgs): Promise<ShrineItem[]> => {
@@ -95,6 +98,7 @@ export const router = createBrowserRouter([
           { path: "shrines", element: <ShrineListPage />, loader: shrineListLoader, hydrateFallbackElement: loading },
           { path: "shrines/:id", element: <ShrineDetailPage />, loader: shrineDetailLoader, hydrateFallbackElement: loading },
           { path: "areas", element: <AreasPage />, loader: areasLoader, hydrateFallbackElement: loading },
+          { path: "stations", element: <StationsPage />, loader: stationsLoader, hydrateFallbackElement: loading },
           { path: "saved", element: <SavedPage />, loader: savedLoader, hydrateFallbackElement: loading },
           { path: "*", element: <NotFoundPage /> },
         ],

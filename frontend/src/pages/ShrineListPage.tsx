@@ -21,9 +21,11 @@ export default function ShrineListPage() {
   const worry = data.filters.worry.find((o) => o.selected);
   const heading = worry
     ? `${worry.label}で行きたい神社と参拝後のお店`
-    : data.q
-      ? `「${data.q}」の神社と参拝後のお店`
-      : "神社と参拝後のお店";
+    : data.station
+      ? `${data.station}から行ける神社と参拝後のお店`
+      : data.q
+        ? `「${data.q}」の神社と参拝後のお店`
+        : "神社と参拝後のお店";
   useDocumentTitle(heading);
 
   // 条件は URL に持たせる（戻る・共有ができるように）
@@ -43,12 +45,13 @@ export default function ShrineListPage() {
   const setSort = (key: SortKey) => update((p) => (key === "new" ? p.delete("sort") : p.set("sort", key)));
   const clearAll = () =>
     update((p) => {
-      ["worry", "area", "k", "q"].forEach((k) => p.delete(k));
+      ["worry", "area", "station", "k", "q"].forEach((k) => p.delete(k));
     });
 
   const f = data.filters;
   const selected = [
     ...(data.q ? [`「${data.q}」`] : []),
+    ...(data.station ? [data.station] : []),
     ...[...f.worry, ...f.area, ...f.kodawari].filter((o) => o.selected).map((o) => o.label),
   ];
 
@@ -56,7 +59,14 @@ export default function ShrineListPage() {
     <div className="container lpage">
       <div className="phead">
         <nav className="crumb" aria-label="パンくずリスト">
-          <Link to="/">神社めし呑み</Link> ＞ 悩みから探す
+          <Link to="/">神社めし呑み</Link> ＞{" "}
+          {data.station ? (
+            <>
+              <Link to="/stations">駅から探す</Link> ＞ {data.station}
+            </>
+          ) : (
+            "悩みから探す"
+          )}
         </nav>
         <h1>
           {heading}

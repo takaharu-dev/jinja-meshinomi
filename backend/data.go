@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"slices"
+	"strings"
 )
 
 // 神社・マスタデータ。写真・店名・数値は仮置き。
@@ -84,6 +85,11 @@ func (s Shrine) Has(kodawari string) bool {
 		return s.WalkMin <= 5
 	}
 	return slices.Contains(s.Tags, kodawari)
+}
+
+// StationList は最寄り駅を1つずつに分けて返す
+func (s Shrine) StationList() []string {
+	return strings.Split(s.Stations, "・")
 }
 
 func (s Shrine) Access() string {

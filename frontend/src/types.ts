@@ -50,6 +50,7 @@ export type ShrineListResponse = {
   items: ShrineItem[];
   filters: { worry: FilterOption[]; area: FilterOption[]; kodawari: FilterOption[] };
   q: string;
+  station: string;
   sort: SortKey;
 };
 
@@ -84,3 +85,6 @@ export type ShrineDetail = {
 export type AreaCount = { slug: string; label: string; count: number };
 
 export type AreaGroupCount = { name: string; areas: AreaCount[] };
+
+// ---------- 駅（backend/stations.go） ----------
+export type StationGroup = { area: Option; stations: { name: string; count: number }[] };
