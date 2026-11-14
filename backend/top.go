@@ -69,12 +69,8 @@ func popularShrines(n int) []ShrineCard {
 var topData = TopResponse{
 	Worries:     worries,
 	Popular:     popularShrines(4),
-	MainFeature: Feature{ID: "career-5", Title: "仕事でモヤモヤした日に行きたい神社5選", Summary: "参拝のあとに寄りたい蕎麦屋と酒場も"},
-	SubFeatures: []Feature{
-		{ID: "kagurazaka-night", Title: "縁結び神社と、神楽坂の夜", Summary: "良縁祈願のあとは小料理屋で日本酒"},
-		{ID: "yakuyoke-kanpai", Title: "厄を祓って、酒場で乾杯", Summary: "厄除け神社と、帰りに寄れる居酒屋"},
-		{ID: "solo", Title: "一人で行ける神社と一杯", Summary: "カウンターで気軽に飲めるお店"},
-	},
+	MainFeature: featureDefs[0].summary(),
+	SubFeatures: featureSummaries(featureDefs[1:]),
 	AreaGroups: []AreaGroup{
 		{Name: "都心", Areas: areaOptions("chiyoda", "chuo", "minato")},
 		{Name: "副都心", Areas: areaOptions("shinjuku", "shibuya", "toshima")},

@@ -1,0 +1,175 @@
+.fpage {
+  padding-bottom: 48px;
+}
+
+/* カード */
+.fgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.fcard {
+  display: grid;
+  align-content: start;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.fcard:hover {
+  border-color: var(--shu);
+}
+.fcard .ph {
+  aspect-ratio: 16 / 9;
+}
+.fcard__in {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px 14px;
+}
+.fcard__in small {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--shu);
+}
+.fcard__in b {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.fcard:hover b {
+  color: var(--shu);
+}
+.fcard__in > span {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+/* 記事 */
+.fhero {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.fhero .ph {
+  aspect-ratio: 21 / 9;
+}
+.fhero__cap {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  gap: 4px;
+  padding: 24px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+  color: var(--white);
+}
+.fhero__cap small {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+.fhero__cap h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+.fhero__cap p {
+  margin: 0;
+  font-size: 14px;
+}
+.flead {
+  max-width: 760px;
+  margin: 24px 0 32px;
+  font-size: 15px;
+  line-height: 2;
+}
+
+.fsec {
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 18px;
+  font-weight: 900;
+}
+.fsec em {
+  margin-left: 8px;
+  font-size: 14px;
+  font-style: normal;
+  color: var(--shu);
+}
+
+/* 番号付きの神社 */
+.fitems {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: fitem;
+}
+.fitems li {
+  position: relative;
+  counter-increment: fitem;
+}
+.fitems li::before {
+  content: counter(fitem, decimal-leading-zero);
+  position: absolute;
+  top: 26px;
+  left: 8px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--shu);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 900;
+}
+.fcta {
+  margin-top: 20px;
+  text-align: center;
+}
+.fothers {
+  margin-top: 48px;
+}
+.fothers .fgrid {
+  margin-top: 16px;
+}
+
+@media (max-width: 767px) {
+  .fgrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .fhero {
+    margin-inline: calc(-1 * var(--gutter));
+    border-radius: 0;
+  }
+  .fhero .ph {
+    aspect-ratio: 4 / 3;
+  }
+  .fhero__cap {
+    padding: 16px;
+  }
+  .fhero__cap h1 {
+    font-size: 19px;
+  }
+  .flead {
+    margin: 18px 0 24px;
+    font-size: 14px;
+  }
+  .fsec {
+    font-size: 16px;
+  }
+  .fitems li::before {
+    top: 20px;
+    left: 6px;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+  .fcta .btn {
+    width: 100%;
+  }
+}
