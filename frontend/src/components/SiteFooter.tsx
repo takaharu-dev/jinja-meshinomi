@@ -27,7 +27,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: "神社めし呑みについて",
     links: [
-      { label: "このサイトについて", to: "#" },
+      { label: "このサイトについて", to: "/about" },
       { label: "Instagram", to: "#" },
       { label: "お問い合わせ", to: "#" },
       { label: "プライバシーポリシー", to: "#" },
@@ -38,7 +38,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
 const SP_LINKS: FooterLink[] = [
   { label: "悩みから探す", to: "/shrines" },
   { label: "エリアから探す", to: "/areas" },
-  { label: "このサイトについて", to: "#" },
+  { label: "このサイトについて", to: "/about" },
   { label: "Instagram", to: "#" },
 ];
 
