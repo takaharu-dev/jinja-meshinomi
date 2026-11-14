@@ -52,3 +52,30 @@ export type ShrineListResponse = {
   q: string;
   sort: SortKey;
 };
+
+// ---------- 詳細（backend/shrine_detail.go） ----------
+export type InfoRow = { label: string; value: string };
+
+export type Shop = { name: string; genre: string; distance: string; budget: string; recommend: string };
+
+export type RelatedShrine = { id: string; name: string; area: string };
+
+export type ShrineDetail = {
+  id: string;
+  name: string;
+  kana: string;
+  worry: Option;
+  area: Option;
+  tags: string[];
+  catch: string;
+  stations: string;
+  address: string;
+  mainPhoto: string;
+  thumbs: string[];
+  days: string[];
+  info: InfoRow[];
+  shops: Shop[];
+  sake: InfoRow[];
+  related: RelatedShrine[];
+  instagramUrl: string;
+};

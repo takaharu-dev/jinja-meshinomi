@@ -4,6 +4,7 @@ import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import TopPage from "./pages/TopPage";
 import ShrineListPage from "./pages/ShrineListPage";
+import ShrineDetailPage from "./pages/ShrineDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 /** ページが変わったら一番上へ（絞り込みでクエリだけ変わるときはそのまま） */
@@ -22,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<TopPage />} />
           <Route path="/shrines" element={<ShrineListPage />} />
+          <Route path="/shrines/:id" element={<ShrineDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

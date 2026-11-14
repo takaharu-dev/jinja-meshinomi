@@ -13,8 +13,8 @@ const NAV = [
 export default function SiteHeader() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  // TOP と一覧では「悩みから探す」を選択中に
-  const current = pathname === "/" || pathname === "/shrines" ? "/shrines" : null;
+  // TOP・一覧・詳細では「悩みから探す」を選択中に
+  const current = pathname === "/" || pathname.startsWith("/shrines") ? "/shrines" : null;
 
   return (
     <header>

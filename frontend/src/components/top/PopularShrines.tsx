@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { ShrineCard } from "../../types";
 import Placeholder from "../Placeholder";
 import SaveButton from "../SaveButton";
@@ -10,10 +11,14 @@ export default function PopularShrines({ shrines }: { shrines: ShrineCard[] }) {
       <div className="tb-cards">
         {shrines.map((s) => (
           <article key={s.id} className="tb-card">
-            <Placeholder label="神社の写真" />
+            <Link to={`/shrines/${s.id}`} tabIndex={-1} aria-hidden="true">
+              <Placeholder label="神社の写真" />
+            </Link>
             <div className="tb-in">
               <span className="tag">{s.worry}</span>
-              <b>{s.name}</b>
+              <b>
+                <Link to={`/shrines/${s.id}`}>{s.name}</Link>
+              </b>
               <small>
                 {s.area}｜{s.access}
               </small>

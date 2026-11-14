@@ -1,0 +1,299 @@
+/* ---------- タイトル ---------- */
+.dtitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+.dtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.dpage .phead h1 {
+  margin: 0;
+  font-size: 24px;
+}
+.dpage .phead h1 small {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--sub);
+}
+.dcatch {
+  margin: 4px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--shu);
+}
+
+/* ---------- タブ ---------- */
+.dtabs {
+  border-bottom: 3px solid var(--shu);
+}
+.dtabs .container {
+  display: flex;
+}
+.dtabs a {
+  padding: 11px 24px;
+  font-weight: 700;
+  color: var(--shu);
+}
+.dtabs a[aria-current="true"] {
+  background: var(--shu);
+  color: var(--white);
+}
+
+/* ---------- 本文 ---------- */
+.dbody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 32px;
+  padding-block: 32px 48px;
+}
+.dmain {
+  display: grid;
+  gap: 36px;
+  min-width: 0;
+}
+.dmain section {
+  scroll-margin-top: 16px;
+}
+.dside {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.st {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 19px;
+  font-weight: 900;
+  color: var(--shu);
+}
+.st::before {
+  content: "";
+  width: 5px;
+  height: 22px;
+  background: var(--shu);
+}
+
+.gal__big {
+  aspect-ratio: 16 / 9;
+}
+.gal__th {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+.gal__th .ph {
+  aspect-ratio: 3 / 2;
+}
+
+.days {
+  margin: 0;
+  padding-left: 1.2em;
+  line-height: 2;
+}
+
+.tbl {
+  width: 100%;
+  border: 1px solid var(--shu);
+  border-collapse: collapse;
+}
+.tbl th {
+  width: 120px;
+  padding: 8px 12px;
+  background: var(--shu);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  vertical-align: top;
+}
+.tbl td {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.tbl tr + tr th {
+  border-top: 1px solid var(--white);
+}
+.tbl tr + tr td {
+  border-top: 1px solid var(--shu);
+}
+
+.shops {
+  display: grid;
+  gap: 12px;
+}
+.shop {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--shu);
+}
+.shop .ph {
+  aspect-ratio: 4 / 3;
+}
+.shop b {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: var(--shu);
+}
+
+.map {
+  display: block;
+  margin-top: 12px;
+}
+.map .ph {
+  aspect-ratio: 3 / 1;
+  transition: color 0.15s;
+}
+.map:hover .ph {
+  color: var(--shu);
+}
+
+.dreel p {
+  margin: 0 0 12px;
+}
+
+/* サイドバー */
+.abox {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 2px solid var(--shu);
+}
+.abox b {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--shu);
+}
+.abox small {
+  font-size: 12px;
+  color: var(--sub);
+}
+.rel {
+  padding: 16px;
+  border: 1px solid var(--shu);
+}
+.rel h2 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--shu);
+}
+.rel a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.rel .ph {
+  flex: none;
+  width: 70px;
+  height: 52px;
+}
+.rel b {
+  display: block;
+  color: var(--shu);
+}
+.rel a:hover b {
+  text-decoration: underline;
+}
+.rel small {
+  font-size: 11px;
+  color: var(--sub);
+}
+
+.dbar {
+  display: none;
+}
+
+/* ---------- タブレット ---------- */
+@media (max-width: 860px) {
+  .dbody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- スマホ ---------- */
+@media (max-width: 767px) {
+  .dpage .phead h1 {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .dpage .phead h1 small {
+    display: block;
+    margin: 2px 0 0;
+  }
+  .dtitle__save {
+    display: none;
+  }
+  .dtabs .container {
+    padding-inline: 0;
+  }
+  .dtabs a {
+    flex: 1;
+    padding: 9px 0;
+    font-size: 13px;
+    text-align: center;
+  }
+  .dtabs a:last-child {
+    display: none;
+  }
+  .dbody {
+    padding-block: 20px 28px;
+  }
+  .dmain {
+    gap: 26px;
+  }
+  .dside {
+    display: none;
+  }
+  .st {
+    font-size: 16px;
+  }
+  .gal {
+    margin-inline: calc(-1 * var(--gutter));
+  }
+  .gal__th {
+    display: none;
+  }
+  .tbl th {
+    width: 90px;
+  }
+  .shop {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+  .shop .tbl tr:nth-child(n + 3) {
+    display: none;
+  }
+  .dbar {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--white);
+    border-top: 1px solid var(--shu);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .dbar .btn {
+    padding: 12px;
+  }
+  .dbar .btn:last-child {
+    flex: 1;
+  }
+}
