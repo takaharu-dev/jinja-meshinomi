@@ -9,12 +9,15 @@ import {
   type LoaderFunctionArgs,
 } from "react-router";
 import { fetchShrine, fetchShrines, fetchTop, NotFoundError } from "./api";
+import { loadSaved } from "./saved";
+import type { ShrineItem } from "./types";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import TopPage from "./pages/TopPage";
 import ShrineListPage from "./pages/ShrineListPage";
 import ShrineDetailPage from "./pages/ShrineDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import SavedPage from "./pages/SavedPage";
 
 // ---------- loader ----------
 // 画面を切り替える前にデータを取得する。取得中は今のページを表示したままにする。
@@ -35,6 +38,16 @@ export const shrineListLoader = ({ request }: LoaderFunctionArgs) =>
 
 export const shrineDetailLoader = ({ request, params }: LoaderFunctionArgs) =>
   load(fetchShrine(params.id ?? "", request.signal));
+
+/** 保存リスト：ブラウザに保存した ID で取得し、最近保存した順に並べる */
+export const savedLoader = async ({ request }: LoaderFunctionArgs): Promise<ShrineItem[]> => {
+  const ids = loadSaved();
+  if (ids.length === 0) return [];
+  const params = new URLSearchParams(ids.map((id) => ["id", id]));
+  const res = await load(fetchShrines(params.toString(), request.signal));
+  const order = new Map(ids.map((id, i) => [id, i]));
+  return res.items.sort((a, b) => (order.get(b.id) ?? 0) - (order.get(a.id) ?? 0));
+};
 
 // ---------- レイアウト ----------
 
@@ -78,6 +91,7 @@ export const router = createBrowserRouter([
           { index: true, element: <TopPage />, loader: topLoader, hydrateFallbackElement: loading },
           { path: "shrines", element: <ShrineListPage />, loader: shrineListLoader, hydrateFallbackElement: loading },
           { path: "shrines/:id", element: <ShrineDetailPage />, loader: shrineDetailLoader, hydrateFallbackElement: loading },
+          { path: "saved", element: <SavedPage />, loader: savedLoader, hydrateFallbackElement: loading },
           { path: "*", element: <NotFoundPage /> },
         ],
       },

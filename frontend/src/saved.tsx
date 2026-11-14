@@ -7,7 +7,8 @@ type Saved = { has: (id: string) => boolean; toggle: (id: string) => void };
 
 const SavedContext = createContext<Saved | null>(null);
 
-function load(): string[] {
+/** 保存した神社の ID（保存した順） */
+export function loadSaved(): string[] {
   try {
     const v = JSON.parse(localStorage.getItem(KEY) ?? "[]");
     return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
@@ -17,7 +18,7 @@ function load(): string[] {
 }
 
 export function SavedProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<string[]>(load);
+  const [ids, setIds] = useState<string[]>(loadSaved);
 
   useEffect(() => {
     try {

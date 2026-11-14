@@ -193,7 +193,7 @@ button {
   display: flex;
   gap: 16px;
 }
-.sph__icons button {
+.sph__icons > * {
   border: 0;
   background: none;
   padding: 0;

@@ -23,7 +23,7 @@ export default function SiteHeader() {
         <div className="container">
           <span className="util__lead">悩んだ日に行きたい神社と、参拝後のごはん・地酒が探せるサイト</span>
           <span>
-            <a href="#">♡ 保存リスト</a>　<a href="#">Instagram</a>
+            <Link to="/saved">♡ 保存リスト</Link>　<a href="#">Instagram</a>
           </span>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function SiteHeader() {
           神社めし呑み
         </Link>
         <div className="sph__icons">
-          <button type="button" aria-label="保存リスト">♡</button>
+          <Link to="/saved" aria-label="保存リスト">♡</Link>
           <button type="button" aria-label="メニュー">☰</button>
         </div>
       </div>
