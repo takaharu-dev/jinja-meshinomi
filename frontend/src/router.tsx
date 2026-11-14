@@ -24,6 +24,7 @@ import FeaturesPage from "./pages/FeaturesPage";
 import FeaturePage from "./pages/FeaturePage";
 import LogsPage from "./pages/LogsPage";
 import LogPage from "./pages/LogPage";
+import AboutPage from "./pages/AboutPage";
 
 // ---------- loader ----------
 // 画面を切り替える前にデータを取得する。取得中は今のページを表示したままにする。
@@ -116,6 +117,7 @@ export const router = createBrowserRouter([
           { path: "features/:id", element: <FeaturePage />, loader: featureLoader, hydrateFallbackElement: loading },
           { path: "logs", element: <LogsPage />, loader: logsLoader, hydrateFallbackElement: loading },
           { path: "logs/:id", element: <LogPage />, loader: logLoader, hydrateFallbackElement: loading },
+          { path: "about", element: <AboutPage /> },
           { path: "saved", element: <SavedPage />, loader: savedLoader, hydrateFallbackElement: loading },
           { path: "*", element: <NotFoundPage /> },
         ],

@@ -7,7 +7,7 @@ const NAV = [
   { label: "エリアから探す", to: "/areas" },
   { label: "駅から探す", to: "/stations" },
   { label: "特集", to: "/features" },
-  { label: "このサイトについて", to: "#" },
+  { label: "このサイトについて", to: "/about" },
 ];
 
 export default function SiteHeader() {

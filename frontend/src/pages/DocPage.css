@@ -1,0 +1,107 @@
+/* このサイトについて・お問い合わせ・プライバシーポリシーなど、文章中心のページ */
+.doc {
+  max-width: 760px;
+  padding-bottom: 56px;
+}
+.doc__lead {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.doc section {
+  margin-top: 36px;
+}
+.doc .phead + section {
+  margin-top: 8px;
+}
+.doc h2 {
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 18px;
+  font-weight: 900;
+}
+.doc p,
+.doc li {
+  font-size: 14px;
+  line-height: 1.9;
+}
+.doc p {
+  margin: 0 0 1em;
+}
+.doc ul,
+.doc ol {
+  margin: 0 0 1em;
+  padding-left: 1.4em;
+}
+.doc p a:not(.btn),
+.doc ul:not(.doc-links) a:not(.btn) {
+  color: var(--sakaki);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.doc__catch {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--shu);
+}
+.doc__note {
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--cream-line);
+  border-radius: 6px;
+}
+.doc__note p:last-child,
+.doc__note ul:last-child {
+  margin-bottom: 0;
+}
+.doc__updated {
+  margin-top: 36px;
+  font-size: 12px;
+  color: var(--sub);
+}
+
+/* 使い方などの項目 */
+.doc .doc-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.doc .doc-links a {
+  display: grid;
+  gap: 2px;
+  height: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: inherit;
+  font-weight: 400;
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.doc .doc-links a:hover {
+  border-color: var(--shu);
+}
+.doc-links b {
+  font-size: 15px;
+  color: var(--ink);
+}
+.doc-links span {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--sub);
+}
+
+@media (max-width: 767px) {
+  .doc .doc-links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .doc h2 {
+    font-size: 16px;
+  }
+}
