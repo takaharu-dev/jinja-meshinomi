@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { AreaGroup } from "../../types";
 import SectionHead from "./SectionHead";
 
@@ -10,7 +11,7 @@ export default function AreaList({ groups }: { groups: AreaGroup[] }) {
           <div key={g.name}>
             <b>{g.name}</b>
             {g.areas.map((a) => (
-              <a key={a} href={`#area-${a}`}>{a}</a>
+              <Link key={a.slug} to={`/shrines?area=${a.slug}`}>{a.label}</Link>
             ))}
           </div>
         ))}

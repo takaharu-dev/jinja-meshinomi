@@ -1,10 +1,50 @@
-const COLUMNS = [
-  { title: "悩みから探す", links: ["仕事・出世", "恋愛・縁結び", "縁切り", "金運", "厄除け"] },
-  { title: "エリアから探す", links: ["港区", "千代田区", "中央区", "新宿区", "渋谷区"] },
-  { title: "神社めし呑みについて", links: ["このサイトについて", "Instagram", "お問い合わせ", "プライバシーポリシー"] },
+import type { ReactNode } from "react";
+import { Link } from "react-router";
+
+type FooterLink = { label: string; to: string };
+
+const COLUMNS: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "悩みから探す",
+    links: [
+      { label: "仕事・出世", to: "/shrines?worry=career" },
+      { label: "恋愛・縁結び", to: "/shrines?worry=love" },
+      { label: "縁切り", to: "/shrines?worry=enkiri" },
+      { label: "金運", to: "/shrines?worry=money" },
+      { label: "厄除け", to: "/shrines?worry=yakuyoke" },
+    ],
+  },
+  {
+    title: "エリアから探す",
+    links: [
+      { label: "港区", to: "/shrines?area=minato" },
+      { label: "千代田区", to: "/shrines?area=chiyoda" },
+      { label: "中央区", to: "/shrines?area=chuo" },
+      { label: "新宿区", to: "/shrines?area=shinjuku" },
+      { label: "渋谷区", to: "/shrines?area=shibuya" },
+    ],
+  },
+  {
+    title: "神社めし呑みについて",
+    links: [
+      { label: "このサイトについて", to: "#" },
+      { label: "Instagram", to: "#" },
+      { label: "お問い合わせ", to: "#" },
+      { label: "プライバシーポリシー", to: "#" },
+    ],
+  },
 ];
 
-const SP_LINKS = ["悩みから探す", "エリアから探す", "このサイトについて", "Instagram"];
+const SP_LINKS: FooterLink[] = [
+  { label: "悩みから探す", to: "/shrines" },
+  { label: "エリアから探す", to: "#" },
+  { label: "このサイトについて", to: "#" },
+  { label: "Instagram", to: "#" },
+];
+
+function FLink({ link, children }: { link: FooterLink; children: ReactNode }) {
+  return link.to === "#" ? <a href="#">{children}</a> : <Link to={link.to}>{children}</Link>;
+}
 
 export default function SiteFooter() {
   const year = new Date().getFullYear();
@@ -17,7 +57,7 @@ export default function SiteFooter() {
               <div key={col.title}>
                 <b>{col.title}</b>
                 {col.links.map((l) => (
-                  <a key={l} href="#">{l}</a>
+                  <FLink key={l.label} link={l}>{l.label}</FLink>
                 ))}
               </div>
             ))}
@@ -31,10 +71,10 @@ export default function SiteFooter() {
 
       <footer className="ftsp">
         {SP_LINKS.map((l) => (
-          <a key={l} href="#">
-            {l}
+          <FLink key={l.label} link={l}>
+            {l.label}
             <span aria-hidden="true">›</span>
-          </a>
+          </FLink>
         ))}
         <small>© {year} 神社めし呑み</small>
       </footer>

@@ -7,6 +7,7 @@ import Features from "../components/top/Features";
 import AreaList from "../components/top/AreaList";
 import RecentLogs from "../components/top/RecentLogs";
 import InstagramBanner from "../components/top/InstagramBanner";
+import { useDocumentTitle } from "../useDocumentTitle";
 import "./TopPage.css";
 
 type State =
@@ -16,6 +17,7 @@ type State =
 
 export default function TopPage() {
   const [state, setState] = useState<State>({ status: "loading" });
+  useDocumentTitle();
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -32,7 +34,7 @@ export default function TopPage() {
 
   if (state.status !== "ok") {
     return (
-      <p className="container tb-status">
+      <p className="container page-status">
         {state.status === "loading" ? "読み込み中…" : "データを読み込めませんでした。時間をおいて再度お試しください。"}
       </p>
     );

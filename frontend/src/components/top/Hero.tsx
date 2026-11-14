@@ -1,11 +1,22 @@
-import type { Worry } from "../../types";
+import { Link, useNavigate } from "react-router";
+import type { Option } from "../../types";
+import { searchPath } from "../../search";
 
-export default function Hero({ worries }: { worries: Worry[] }) {
+export default function Hero({ worries }: { worries: Option[] }) {
+  const navigate = useNavigate();
   return (
     <section className="tb-hero">
       <div className="container">
         <h1 className="tb-catch">モヤモヤした日は、神社と一杯。</h1>
-        <form className="tb-search" role="search" onSubmit={(e) => e.preventDefault()}>
+        <form
+          className="tb-search"
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const f = new FormData(e.currentTarget);
+            navigate(searchPath(f.get("area"), f.get("q")));
+          }}
+        >
           <label>
             <span>エリア・駅</span>
             <input type="text" name="area" placeholder="例：港区、神楽坂駅" />
@@ -18,10 +29,10 @@ export default function Hero({ worries }: { worries: Worry[] }) {
         </form>
         <nav className="tb-worries" aria-label="悩みから探す">
           {worries.map((w) => (
-            <a key={w.slug} href={`#worry-${w.slug}`}>
+            <Link key={w.slug} to={`/shrines?worry=${w.slug}`}>
               <i aria-hidden="true">{w.icon}</i>
               {w.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
