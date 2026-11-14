@@ -1,5 +1,8 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import Logo from "./Logo";
+import SpMenu from "./SpMenu";
+import { INSTAGRAM_URL } from "../constants";
 import { searchPath } from "../search";
 
 const NAV = [
@@ -11,15 +14,23 @@ const NAV = [
 ];
 
 export default function SiteHeader() {
-  const { pathname, search } = useLocation();
+  const { pathname, search, key } = useLocation();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    menuButton.current?.focus();
+  }, []);
+  // ページを移動したらメニューを閉じる
+  useEffect(() => setMenuOpen(false), [key]);
   // 今いるページに合わせてメニューを選択中に（TOP・一覧・詳細は「悩みから探す」）
   const current =
     pathname === "/shrines" && new URLSearchParams(search).has("station")
       ? "/stations"
       : pathname === "/" || pathname.startsWith("/shrines")
         ? "/shrines"
-        : (NAV.find((n) => n.to !== "#" && pathname.startsWith(n.to))?.to ?? null);
+        : (NAV.find((n) => pathname.startsWith(n.to))?.to ?? null);
 
   return (
     <header>
@@ -28,7 +39,9 @@ export default function SiteHeader() {
         <div className="container">
           <span className="util__lead">悩んだ日に行きたい神社と、参拝後のごはん・地酒が探せるサイト</span>
           <span>
-            <Link to="/saved">♡ 保存リスト</Link>　<a href="#">Instagram</a>
+            <Link to="/saved">♡ 保存リスト</Link>　<a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+              Instagram
+            </a>
           </span>
         </div>
       </div>
@@ -60,15 +73,11 @@ export default function SiteHeader() {
       </div>
       <nav className="gnav" aria-label="メインメニュー">
         <div className="container">
-          {NAV.map((n) =>
-            n.to === "#" ? (
-              <a key={n.label} href="#">{n.label}</a>
-            ) : (
-              <Link key={n.label} to={n.to} aria-current={current === n.to ? "page" : undefined}>
-                {n.label}
-              </Link>
-            ),
-          )}
+          {NAV.map((n) => (
+            <Link key={n.label} to={n.to} aria-current={current === n.to ? "page" : undefined}>
+              {n.label}
+            </Link>
+          ))}
         </div>
       </nav>
 
@@ -80,9 +89,19 @@ export default function SiteHeader() {
         </Link>
         <div className="sph__icons">
           <Link to="/saved" aria-label="保存リスト">♡</Link>
-          <button type="button" aria-label="メニュー">☰</button>
+          <button
+            ref={menuButton}
+            type="button"
+            aria-label="メニューを開く"
+            aria-expanded={menuOpen}
+            aria-controls="sp-menu"
+            onClick={() => setMenuOpen(true)}
+          >
+            ☰
+          </button>
         </div>
       </div>
+      {menuOpen && <SpMenu id="sp-menu" onClose={closeMenu} />}
     </header>
   );
 }
