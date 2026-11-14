@@ -14,6 +14,7 @@ import (
 //	k=<slug>      こだわり（複数可・すべて満たすもの）
 //	q=<text>      キーワード（空白区切り・すべて含むもの）
 //	sort=new|popular|near
+//	id=<id>       神社ID（複数可・保存リスト用。指定するとその神社だけに絞る）
 
 type ShrineItem struct {
 	ID         string `json:"id"`
@@ -62,7 +63,12 @@ type listQuery struct {
 	kodawari []string
 	terms    []string
 	sort     string
+	byID     bool     // id が指定されたか（存在しない ID だけでも 0 件にするため）
+	ids      []string // 存在する神社の ID だけ
 }
+
+// 保存リストで一度に指定できる ID の上限
+const maxIDs = 100
 
 // parseListQuery は不明な値を無視して検索条件を組み立てる
 func parseListQuery(v url.Values) listQuery {
@@ -79,6 +85,14 @@ func parseListQuery(v url.Values) listQuery {
 		}
 	}
 	q.terms = strings.Fields(strings.ToLower(v.Get("q")))
+	if ids := v["id"]; len(ids) > 0 {
+		q.byID = true
+		for _, id := range ids[:min(len(ids), maxIDs)] {
+			if _, ok := findShrine(id); ok && !slices.Contains(q.ids, id) {
+				q.ids = append(q.ids, id)
+			}
+		}
+	}
 	switch s := v.Get("sort"); s {
 	case sortPopular, sortNear:
 		q.sort = s
@@ -89,6 +103,9 @@ func parseListQuery(v url.Values) listQuery {
 }
 
 func (q listQuery) match(s Shrine) bool {
+	if q.byID && !slices.Contains(q.ids, s.ID) {
+		return false
+	}
 	if q.worry != "" && s.Worry != q.worry {
 		return false
 	}

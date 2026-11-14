@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"slices"
 	"testing"
 )
 
@@ -135,4 +136,14 @@ func shrineByID(id string) Shrine {
 		}
 	}
 	return Shrine{}
+}
+
+func TestShrinesByID(t *testing.T) {
+	got := list(t, "id=hie&id=atago&id=nope&id=hie")
+	if want := []string{"atago", "hie"}; !slices.Equal(ids(got), want) {
+		t.Errorf("ids = %v, want %v（重複・存在しない ID は無視、並びは新着順）", ids(got), want)
+	}
+	if got := list(t, "id=nope"); got.Total != 0 {
+		t.Errorf("unknown id only: total = %d, want 0", got.Total)
+	}
 }
