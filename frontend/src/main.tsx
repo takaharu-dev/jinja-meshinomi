@@ -2,16 +2,14 @@
 import "./styles/global.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router";
-import App from "./App";
+import { RouterProvider } from "react-router/dom";
+import { router } from "./router";
 import { SavedProvider } from "./saved";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <SavedProvider>
-        <App />
-      </SavedProvider>
-    </BrowserRouter>
+    <SavedProvider>
+      <RouterProvider router={router} />
+    </SavedProvider>
   </StrictMode>,
 );

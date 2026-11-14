@@ -1,10 +1,8 @@
 import { useEffect, useState, type MouseEvent } from "react";
-import { Link, useParams } from "react-router";
-import { fetchShrine, NotFoundError } from "../api";
+import { Link, useLoaderData } from "react-router";
 import type { InfoRow, ShrineDetail } from "../types";
 import Placeholder from "../components/Placeholder";
 import SaveButton from "../components/SaveButton";
-import NotFoundPage from "./NotFoundPage";
 import { useDocumentTitle } from "../useDocumentTitle";
 import "./ShrineDetailPage.css";
 
@@ -16,44 +14,11 @@ const TABS = [
   { id: "d-reel", label: "リール" },
 ];
 
-type State =
-  | { status: "loading" }
-  | { status: "error" }
-  | { status: "notfound" }
-  | { status: "ok"; data: ShrineDetail };
-
 export default function ShrineDetailPage() {
-  const { id = "" } = useParams();
-  const [state, setState] = useState<State>({ status: "loading" });
-
-  useEffect(() => {
-    const ctrl = new AbortController();
-    setState({ status: "loading" });
-    fetchShrine(id, ctrl.signal)
-      .then((data) => setState({ status: "ok", data }))
-      .catch((err) => {
-        if (ctrl.signal.aborted) return;
-        if (err instanceof NotFoundError) {
-          setState({ status: "notfound" });
-        } else {
-          console.error(err);
-          setState({ status: "error" });
-        }
-      });
-    return () => ctrl.abort();
-  }, [id]);
-
-  useDocumentTitle(state.status === "ok" ? state.data.name : undefined);
-
-  if (state.status === "notfound") return <NotFoundPage />;
-  if (state.status !== "ok") {
-    return (
-      <p className="container page-status">
-        {state.status === "loading" ? "読み込み中…" : "データを読み込めませんでした。時間をおいて再度お試しください。"}
-      </p>
-    );
-  }
-  return <Detail d={state.data} />;
+  const d = useLoaderData() as ShrineDetail;
+  useDocumentTitle(d.name);
+  // 関連する神社へ移動したときにタブの状態などをリセットする
+  return <Detail key={d.id} d={d} />;
 }
 
 function Table({ rows }: { rows: InfoRow[] }) {
