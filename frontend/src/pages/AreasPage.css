@@ -1,0 +1,70 @@
+.apage {
+  padding-bottom: 48px;
+}
+.apage__lead {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--sub);
+}
+
+.agroup + .agroup {
+  margin-top: 28px;
+}
+.agroup h2 {
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 18px;
+  font-weight: 900;
+}
+.agrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.acard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  transition: border-color 0.15s;
+}
+.acard b {
+  font-size: 15px;
+}
+.acard span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--shu);
+  white-space: nowrap;
+}
+a.acard:hover {
+  border-color: var(--shu);
+}
+.acard--empty {
+  background: var(--img);
+  color: var(--muted);
+}
+.acard--empty span {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .agrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .acard {
+    padding: 12px;
+  }
+  .acard b {
+    font-size: 14px;
+  }
+}
