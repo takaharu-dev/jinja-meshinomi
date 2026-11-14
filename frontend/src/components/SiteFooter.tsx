@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
+import { INSTAGRAM_URL } from "../constants";
 
 type FooterLink = { label: string; to: string };
 
@@ -28,7 +29,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
     title: "神社めし呑みについて",
     links: [
       { label: "このサイトについて", to: "/about" },
-      { label: "Instagram", to: "#" },
+      { label: "Instagram", to: INSTAGRAM_URL },
       { label: "お問い合わせ", to: "/contact" },
       { label: "プライバシーポリシー", to: "/privacy" },
     ],
@@ -39,11 +40,17 @@ const SP_LINKS: FooterLink[] = [
   { label: "悩みから探す", to: "/shrines" },
   { label: "エリアから探す", to: "/areas" },
   { label: "このサイトについて", to: "/about" },
-  { label: "Instagram", to: "#" },
+  { label: "Instagram", to: INSTAGRAM_URL },
 ];
 
 function FLink({ link, children }: { link: FooterLink; children: ReactNode }) {
-  return link.to === "#" ? <a href="#">{children}</a> : <Link to={link.to}>{children}</Link>;
+  return link.to.startsWith("http") ? (
+    <a href={link.to} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  ) : (
+    <Link to={link.to}>{children}</Link>
+  );
 }
 
 export default function SiteFooter() {

@@ -6,7 +6,7 @@ export default function SectionHead({ id, title, more, to }: Props) {
   return (
     <div className="tb-h">
       <h2 id={id}>{title}</h2>
-      {more && (to ? <Link to={to}>{more} ›</Link> : <a href="#">{more} ›</a>)}
+      {more && to && <Link to={to}>{more} ›</Link>}
     </div>
   );
 }
