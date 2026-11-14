@@ -37,7 +37,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
 
 const SP_LINKS: FooterLink[] = [
   { label: "悩みから探す", to: "/shrines" },
-  { label: "エリアから探す", to: "#" },
+  { label: "エリアから探す", to: "/areas" },
   { label: "このサイトについて", to: "#" },
   { label: "Instagram", to: "#" },
 ];

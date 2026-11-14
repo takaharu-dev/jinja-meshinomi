@@ -79,3 +79,8 @@ export type ShrineDetail = {
   related: RelatedShrine[];
   instagramUrl: string;
 };
+
+// ---------- エリア（backend/areas.go） ----------
+export type AreaCount = { slug: string; label: string; count: number };
+
+export type AreaGroupCount = { name: string; areas: AreaCount[] };
