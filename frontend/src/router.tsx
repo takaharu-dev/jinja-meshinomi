@@ -26,6 +26,7 @@ import LogsPage from "./pages/LogsPage";
 import LogPage from "./pages/LogPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import PrivacyPage from "./pages/PrivacyPage";
 
 // ---------- loader ----------
 // 画面を切り替える前にデータを取得する。取得中は今のページを表示したままにする。
@@ -120,6 +121,7 @@ export const router = createBrowserRouter([
           { path: "logs/:id", element: <LogPage />, loader: logLoader, hydrateFallbackElement: loading },
           { path: "about", element: <AboutPage /> },
           { path: "contact", element: <ContactPage /> },
+          { path: "privacy", element: <PrivacyPage /> },
           { path: "saved", element: <SavedPage />, loader: savedLoader, hydrateFallbackElement: loading },
           { path: "*", element: <NotFoundPage /> },
         ],
