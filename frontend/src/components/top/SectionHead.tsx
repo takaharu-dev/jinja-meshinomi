@@ -1,8 +1,12 @@
-export default function SectionHead({ id, title, more }: { id: string; title: string; more?: string }) {
+import { Link } from "react-router";
+
+type Props = { id: string; title: string; more?: string; to?: string };
+
+export default function SectionHead({ id, title, more, to }: Props) {
   return (
     <div className="tb-h">
       <h2 id={id}>{title}</h2>
-      {more && <a href="#">{more} ›</a>}
+      {more && (to ? <Link to={to}>{more} ›</Link> : <a href="#">{more} ›</a>)}
     </div>
   );
 }

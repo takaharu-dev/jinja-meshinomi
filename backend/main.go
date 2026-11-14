@@ -29,9 +29,8 @@ func newMux(staticDir string) *http.ServeMux {
 	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
-	mux.HandleFunc("GET /api/top", func(w http.ResponseWriter, r *http.Request) {
-		writeJSON(w, http.StatusOK, topData)
-	})
+	mux.HandleFunc("GET /api/top", handleTop)
+	mux.HandleFunc("GET /api/shrines", handleShrines)
 	if staticDir != "" {
 		mux.Handle("GET /", spaHandler(os.DirFS(staticDir)))
 	}

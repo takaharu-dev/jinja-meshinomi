@@ -1,7 +1,13 @@
-import type { TopResponse } from "./types";
+import type { ShrineListResponse, TopResponse } from "./types";
 
-export async function fetchTop(signal?: AbortSignal): Promise<TopResponse> {
-  const res = await fetch("/api/top", { signal });
-  if (!res.ok) throw new Error(`GET /api/top failed: ${res.status}`);
+async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
+  const res = await fetch(path, { signal });
+  if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
   return res.json();
 }
+
+export const fetchTop = (signal?: AbortSignal) => get<TopResponse>("/api/top", signal);
+
+/** query は一覧ページの URL のクエリ文字列をそのまま渡す */
+export const fetchShrines = (query: string, signal?: AbortSignal) =>
+  get<ShrineListResponse>(`/api/shrines${query ? `?${query}` : ""}`, signal);

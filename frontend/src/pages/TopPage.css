@@ -1,9 +1,3 @@
-.tb-status {
-  padding-block: 64px;
-  text-align: center;
-  color: var(--sub);
-}
-
 /* ---------- ヒーロー ---------- */
 .tb-hero {
   background: var(--cream);

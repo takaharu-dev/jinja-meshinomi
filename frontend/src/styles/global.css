@@ -269,3 +269,22 @@ button {
     display: flex;
   }
 }
+
+/* ---------- ページ共通 ---------- */
+.page-status {
+  padding-block: 64px;
+  text-align: center;
+  color: var(--sub);
+}
+.notfound {
+  padding-block: 64px;
+  text-align: center;
+}
+.notfound h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.notfound p {
+  margin: 0 0 24px;
+  color: var(--sub);
+}
