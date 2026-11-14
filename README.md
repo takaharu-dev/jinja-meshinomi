@@ -29,6 +29,7 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 | GET | `/api/health` | 死活確認 |
 | GET | `/api/top` | TOPページ用データ（悩み・人気の神社・特集・エリア・参拝記録） |
 | GET | `/api/shrines` | 神社一覧。`worry` / `area` / `k`（複数可）/ `q` / `sort=new\|popular\|near` で絞り込み・並び替え。各チップを押したときの件数も返す |
+| GET | `/api/shrines/{id}` | 神社の詳細（情報・参拝後のお店・地酒・アクセス・関連する神社）。存在しなければ 404 |
 
 ## 画面
 
@@ -36,6 +37,7 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 | --- | --- |
 | `/` | TOP |
 | `/shrines` | 一覧（絞り込み条件は URL のクエリで持つ。例：`/shrines?worry=career&area=minato`） |
+| `/shrines/:id` | 詳細（例：`/shrines/atago`） |
 
 ## テスト
 

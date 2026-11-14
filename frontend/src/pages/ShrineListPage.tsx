@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router";
-import { fetchShrines } from "../api";
+import { Link, useLoaderData, useNavigation, useSearchParams } from "react-router";
 import type { ShrineListResponse, SortKey } from "../types";
 import FilterRow from "../components/list/FilterRow";
 import ShrineRow from "../components/list/ShrineRow";
@@ -15,33 +13,15 @@ const SORTS: { key: SortKey; label: string }[] = [
 
 export default function ShrineListPage() {
   const [params, setParams] = useSearchParams();
-  const query = params.toString();
-  const [data, setData] = useState<ShrineListResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const data = useLoaderData() as ShrineListResponse;
+  const navigation = useNavigation();
+  // 絞り込み中（同じ一覧ページ内での再取得）は結果を少し薄くする
+  const loading = navigation.state === "loading" && navigation.location.pathname === "/shrines";
 
-  useEffect(() => {
-    const ctrl = new AbortController();
-    setLoading(true);
-    fetchShrines(query, ctrl.signal)
-      .then((d) => {
-        setData(d);
-        setError(false);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (ctrl.signal.aborted) return;
-        console.error(err);
-        setError(true);
-        setLoading(false);
-      });
-    return () => ctrl.abort();
-  }, [query]);
-
-  const worry = data?.filters.worry.find((o) => o.selected);
+  const worry = data.filters.worry.find((o) => o.selected);
   const heading = worry
     ? `${worry.label}で行きたい神社と参拝後のお店`
-    : data?.q
+    : data.q
       ? `「${data.q}」の神社と参拝後のお店`
       : "神社と参拝後のお店";
   useDocumentTitle(heading);
@@ -50,7 +30,7 @@ export default function ShrineListPage() {
   const update = (fn: (p: URLSearchParams) => void) => {
     const next = new URLSearchParams(params);
     fn(next);
-    setParams(next, { replace: true });
+    setParams(next, { replace: true, preventScrollReset: true });
   };
   const toggleSingle = (key: "worry" | "area") => (slug: string) =>
     update((p) => (p.get(key) === slug ? p.delete(key) : p.set(key, slug)));
@@ -65,14 +45,6 @@ export default function ShrineListPage() {
     update((p) => {
       ["worry", "area", "k", "q"].forEach((k) => p.delete(k));
     });
-
-  if (!data) {
-    return (
-      <p className="container page-status">
-        {error ? "データを読み込めませんでした。時間をおいて再度お試しください。" : "読み込み中…"}
-      </p>
-    );
-  }
 
   const f = data.filters;
   const selected = [
@@ -116,7 +88,6 @@ export default function ShrineListPage() {
           ))}
         </div>
 
-        {error && <p className="empty">更新に失敗しました。もう一度お試しください。</p>}
         {data.items.map((s) => (
           <ShrineRow key={s.id} shrine={s} />
         ))}

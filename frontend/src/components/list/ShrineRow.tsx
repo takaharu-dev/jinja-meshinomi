@@ -1,14 +1,20 @@
+import { Link } from "react-router";
 import type { ShrineItem } from "../../types";
 import Placeholder from "../Placeholder";
 import SaveButton from "../SaveButton";
 
 export default function ShrineRow({ shrine: s }: { shrine: ShrineItem }) {
+  const to = `/shrines/${s.id}`;
   return (
     <article className="lrow">
-      <Placeholder label="神社の写真" />
+      <Link to={to} tabIndex={-1} aria-hidden="true">
+        <Placeholder label="神社の写真" />
+      </Link>
       <div className="lr-in">
         <div className="lr-top">
-          <h2 className="lr-name">{s.name}</h2>
+          <h2 className="lr-name">
+            <Link to={to}>{s.name}</Link>
+          </h2>
           <SaveButton id={s.id} name={s.name} variant="round" className="lr-save" />
         </div>
         <small>

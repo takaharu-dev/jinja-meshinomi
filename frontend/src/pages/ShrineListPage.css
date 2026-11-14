@@ -149,6 +149,12 @@
   margin: 0;
   font-size: 18px;
 }
+.lr-name a:hover {
+  color: var(--shu);
+}
+.lrow > a {
+  display: block;
+}
 .lr-save {
   display: grid;
   place-items: center;
