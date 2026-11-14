@@ -2,6 +2,17 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FDVPPMC3B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      // ローカル開発では計測しない
+      if (!["localhost", "127.0.0.1"].includes(location.hostname)) {
+        gtag("js", new Date());
+        gtag("config", "G-4FDVPPMC3B");
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="悩んだ日に行きたい神社と、参拝後のごはん・地酒が探せるサイト" />
     <title>神社めし呑み</title>
