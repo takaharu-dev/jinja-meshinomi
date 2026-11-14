@@ -8,7 +8,7 @@ import {
   useRouteError,
   type LoaderFunctionArgs,
 } from "react-router";
-import { fetchAreas, fetchFeature, fetchFeatures, fetchStations, fetchShrine, fetchShrines, fetchTop, NotFoundError } from "./api";
+import { fetchAreas, fetchFeature, fetchFeatures, fetchLog, fetchLogs, fetchStations, fetchShrine, fetchShrines, fetchTop, NotFoundError } from "./api";
 import { loadSaved } from "./saved";
 import type { ShrineItem } from "./types";
 import SiteHeader from "./components/SiteHeader";
@@ -22,6 +22,8 @@ import AreasPage from "./pages/AreasPage";
 import StationsPage from "./pages/StationsPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import FeaturePage from "./pages/FeaturePage";
+import LogsPage from "./pages/LogsPage";
+import LogPage from "./pages/LogPage";
 
 // ---------- loader ----------
 // 画面を切り替える前にデータを取得する。取得中は今のページを表示したままにする。
@@ -51,6 +53,10 @@ export const featuresLoader = ({ request }: LoaderFunctionArgs) => load(fetchFea
 
 export const featureLoader = ({ request, params }: LoaderFunctionArgs) =>
   load(fetchFeature(params.id ?? "", request.signal));
+
+export const logsLoader = ({ request }: LoaderFunctionArgs) => load(fetchLogs(request.signal));
+
+export const logLoader = ({ request, params }: LoaderFunctionArgs) => load(fetchLog(params.id ?? "", request.signal));
 
 /** 保存リスト：ブラウザに保存した ID で取得し、最近保存した順に並べる */
 export const savedLoader = async ({ request }: LoaderFunctionArgs): Promise<ShrineItem[]> => {
@@ -108,6 +114,8 @@ export const router = createBrowserRouter([
           { path: "stations", element: <StationsPage />, loader: stationsLoader, hydrateFallbackElement: loading },
           { path: "features", element: <FeaturesPage />, loader: featuresLoader, hydrateFallbackElement: loading },
           { path: "features/:id", element: <FeaturePage />, loader: featureLoader, hydrateFallbackElement: loading },
+          { path: "logs", element: <LogsPage />, loader: logsLoader, hydrateFallbackElement: loading },
+          { path: "logs/:id", element: <LogPage />, loader: logLoader, hydrateFallbackElement: loading },
           { path: "saved", element: <SavedPage />, loader: savedLoader, hydrateFallbackElement: loading },
           { path: "*", element: <NotFoundPage /> },
         ],

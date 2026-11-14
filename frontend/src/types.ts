@@ -15,7 +15,8 @@ export type Feature = { id: string; title: string; summary: string };
 
 export type AreaGroup = { name: string; areas: Option[] };
 
-export type VisitLog = { id: string; date: string; title: string; worry: string };
+/** date は YYYY-MM-DD */
+export type VisitLog = { id: string; date: string; title: string; worry: string; shrine: RelatedShrine };
 
 export type TopResponse = {
   worries: Option[];
@@ -95,4 +96,12 @@ export type FeatureDetail = Feature & {
   listQuery: string;
   items: ShrineItem[];
   others: Feature[];
+};
+
+// ---------- 参拝記録（backend/logs.go） ----------
+export type VisitLogDetail = VisitLog & {
+  body: string[];
+  photos: string[];
+  shop: Shop;
+  others: VisitLog[];
 };

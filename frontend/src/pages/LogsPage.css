@@ -1,0 +1,149 @@
+.logpage {
+  padding-bottom: 48px;
+}
+
+/* 一覧の行 */
+.loglist {
+  border-top: 1px solid var(--line);
+}
+.logrow {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.logrow .ph {
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+}
+.logrow__in {
+  display: grid;
+  gap: 4px;
+}
+.logrow__in time {
+  font-size: 12px;
+  color: var(--muted);
+}
+.logrow__in b {
+  font-size: 16px;
+}
+.logrow:hover b {
+  color: var(--shu);
+}
+.logrow__in > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logrow__in small {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+/* 記事 */
+.logmeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--sub);
+}
+.logpage--detail .phead h1 {
+  margin-top: 4px;
+}
+.logmain {
+  aspect-ratio: 16 / 9;
+  max-width: 860px;
+  border-radius: 6px;
+}
+.logbody {
+  max-width: 760px;
+  margin: 24px 0;
+  font-size: 15px;
+  line-height: 2;
+}
+.logbody p {
+  margin: 0 0 1em;
+}
+.logphotos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 860px;
+}
+.logphotos .ph {
+  aspect-ratio: 1;
+  border-radius: 4px;
+}
+.logsec {
+  max-width: 860px;
+  margin-top: 36px;
+}
+.logshrine {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--shu);
+}
+.logshrine .ph {
+  aspect-ratio: 4 / 3;
+}
+.logshrine b {
+  display: block;
+  font-size: 17px;
+  color: var(--shu);
+}
+.logshrine small {
+  display: block;
+  font-size: 12px;
+  color: var(--sub);
+}
+.logshrine__more {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sakaki);
+}
+.logshrine:hover .logshrine__more {
+  text-decoration: underline;
+}
+.fsec-like {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+@media (max-width: 767px) {
+  .logrow {
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+  }
+  .logrow__in b {
+    font-size: 14px;
+  }
+  .logmain {
+    margin-inline: calc(-1 * var(--gutter));
+    border-radius: 0;
+  }
+  .logbody {
+    font-size: 14px;
+  }
+  .logphotos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .logshrine {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+  .fsec-like {
+    font-size: 16px;
+  }
+}
