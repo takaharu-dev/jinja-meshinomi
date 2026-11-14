@@ -88,3 +88,11 @@ export type AreaGroupCount = { name: string; areas: AreaCount[] };
 
 // ---------- 駅（backend/stations.go） ----------
 export type StationGroup = { area: Option; stations: { name: string; count: number }[] };
+
+// ---------- 特集（backend/features.go） ----------
+export type FeatureDetail = Feature & {
+  lead: string;
+  listQuery: string;
+  items: ShrineItem[];
+  others: Feature[];
+};

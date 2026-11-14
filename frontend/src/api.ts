@@ -1,4 +1,4 @@
-import type { AreaGroupCount, StationGroup, ShrineDetail, ShrineListResponse, TopResponse } from "./types";
+import type { AreaGroupCount, Feature, FeatureDetail, StationGroup, ShrineDetail, ShrineListResponse, TopResponse } from "./types";
 
 export class NotFoundError extends Error {}
 
@@ -21,3 +21,8 @@ export const fetchShrine = (id: string, signal?: AbortSignal) =>
 export const fetchAreas = (signal?: AbortSignal) => get<AreaGroupCount[]>("/api/areas", signal);
 
 export const fetchStations = (signal?: AbortSignal) => get<StationGroup[]>("/api/stations", signal);
+
+export const fetchFeatures = (signal?: AbortSignal) => get<Feature[]>("/api/features", signal);
+
+export const fetchFeature = (id: string, signal?: AbortSignal) =>
+  get<FeatureDetail>(`/api/features/${encodeURIComponent(id)}`, signal);
