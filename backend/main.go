@@ -33,6 +33,7 @@ func newMux(staticDir string) *http.ServeMux {
 	mux.HandleFunc("GET /api/shrines", handleShrines)
 	mux.HandleFunc("GET /api/shrines/{id}", handleShrineDetail)
 	mux.HandleFunc("GET /api/areas", handleAreas)
+	mux.HandleFunc("GET /api/stations", handleStations)
 	if staticDir != "" {
 		mux.Handle("GET /", spaHandler(os.DirFS(staticDir)))
 	}

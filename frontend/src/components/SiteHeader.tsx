@@ -5,16 +5,21 @@ import { searchPath } from "../search";
 const NAV = [
   { label: "悩みから探す", to: "/shrines" },
   { label: "エリアから探す", to: "/areas" },
-  { label: "駅から探す", to: "#" },
+  { label: "駅から探す", to: "/stations" },
   { label: "特集", to: "#" },
   { label: "このサイトについて", to: "#" },
 ];
 
 export default function SiteHeader() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
   // 今いるページに合わせてメニューを選択中に（TOP・一覧・詳細は「悩みから探す」）
-  const current = pathname === "/" || pathname.startsWith("/shrines") ? "/shrines" : pathname.startsWith("/areas") ? "/areas" : null;
+  const current =
+    pathname === "/shrines" && new URLSearchParams(search).has("station")
+      ? "/stations"
+      : pathname === "/" || pathname.startsWith("/shrines")
+        ? "/shrines"
+        : (NAV.find((n) => n.to !== "#" && pathname.startsWith(n.to))?.to ?? null);
 
   return (
     <header>

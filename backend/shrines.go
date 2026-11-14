@@ -14,6 +14,7 @@ import (
 //	k=<slug>      こだわり（複数可・すべて満たすもの）
 //	q=<text>      キーワード（空白区切り・すべて含むもの）
 //	sort=new|popular|near
+//	station=<駅名> 最寄り駅（例：神谷町駅）
 //	id=<id>       神社ID（複数可・保存リスト用。指定するとその神社だけに絞る）
 
 type ShrineItem struct {
@@ -48,6 +49,7 @@ type ShrineListResponse struct {
 	Items   []ShrineItem `json:"items"`
 	Filters Filters      `json:"filters"`
 	Q       string       `json:"q"`
+	Station string       `json:"station"`
 	Sort    string       `json:"sort"`
 }
 
@@ -60,6 +62,7 @@ const (
 type listQuery struct {
 	worry    string
 	area     string
+	station  string
 	kodawari []string
 	terms    []string
 	sort     string
@@ -78,6 +81,9 @@ func parseListQuery(v url.Values) listQuery {
 	}
 	if _, ok := findOption(areas, v.Get("area")); ok {
 		q.area = v.Get("area")
+	}
+	if st := v.Get("station"); st != "" && slices.ContainsFunc(shrines, func(s Shrine) bool { return slices.Contains(s.StationList(), st) }) {
+		q.station = st
 	}
 	for _, k := range v["k"] {
 		if _, ok := findOption(kodawaris, k); ok && !slices.Contains(q.kodawari, k) {
@@ -110,6 +116,9 @@ func (q listQuery) match(s Shrine) bool {
 		return false
 	}
 	if q.area != "" && s.Area != q.area {
+		return false
+	}
+	if q.station != "" && !slices.Contains(s.StationList(), q.station) {
 		return false
 	}
 	for _, k := range q.kodawari {
@@ -211,6 +220,7 @@ func buildShrineList(q listQuery) ShrineListResponse {
 		Items:   items,
 		Filters: f,
 		Q:       strings.Join(q.terms, " "),
+		Station: q.station,
 		Sort:    q.sort,
 	}
 }
