@@ -29,7 +29,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "このサイトについて", to: "/about" },
       { label: "Instagram", to: "#" },
-      { label: "お問い合わせ", to: "#" },
+      { label: "お問い合わせ", to: "/contact" },
       { label: "プライバシーポリシー", to: "#" },
     ],
   },

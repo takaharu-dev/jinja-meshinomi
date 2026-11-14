@@ -51,6 +51,7 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 | `/logs` | 参拝記録の一覧 |
 | `/logs/:id` | 参拝記録の記事（例：`/logs/2026-10-24-hie`） |
 | `/about` | このサイトについて |
+| `/contact` | お問い合わせ（Instagram の DM へ案内） |
 | `/saved` | 保存リスト（ブラウザに保存した神社） |
 
 ## テスト

@@ -105,3 +105,34 @@
     font-size: 16px;
   }
 }
+
+/* お問い合わせの案内 */
+.doc-cta {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 28px 20px;
+  border: 2px solid var(--shu);
+  border-radius: 8px;
+  text-align: center;
+}
+.doc-cta p {
+  margin: 0;
+  font-size: 15px;
+}
+.doc-cta b {
+  color: var(--shu);
+}
+.doc-cta .btn {
+  padding: 12px 28px;
+  font-size: 15px;
+}
+.doc-cta small {
+  font-size: 12px;
+  color: var(--sub);
+}
+@media (max-width: 767px) {
+  .doc-cta .btn {
+    width: 100%;
+  }
+}
