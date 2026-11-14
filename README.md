@@ -33,6 +33,8 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 | GET | `/api/stations` | 最寄り駅（エリアごと）と、駅ごとの神社の件数 |
 | GET | `/api/features` | 特集の一覧 |
 | GET | `/api/features/{id}` | 特集の記事（導入文・対象の神社・ほかの特集）。存在しなければ 404 |
+| GET | `/api/logs` | 参拝記録の一覧（新しい順） |
+| GET | `/api/logs/{id}` | 参拝記録の記事（本文・写真・参拝した神社・寄ったお店・ほかの記録）。存在しなければ 404 |
 | GET | `/api/shrines/{id}` | 神社の詳細（情報・参拝後のお店・地酒・アクセス・関連する神社）。存在しなければ 404 |
 
 ## 画面
@@ -46,6 +48,8 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 | `/stations` | 駅から探す |
 | `/features` | 特集の一覧 |
 | `/features/:id` | 特集の記事（例：`/features/career`） |
+| `/logs` | 参拝記録の一覧 |
+| `/logs/:id` | 参拝記録の記事（例：`/logs/2026-10-24-hie`） |
 | `/saved` | 保存リスト（ブラウザに保存した神社） |
 
 ## テスト

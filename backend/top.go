@@ -25,13 +25,6 @@ type AreaGroup struct {
 	Areas []Option `json:"areas"`
 }
 
-type VisitLog struct {
-	ID    string `json:"id"`
-	Date  string `json:"date"`
-	Title string `json:"title"`
-	Worry string `json:"worry"`
-}
-
 type TopResponse struct {
 	Worries       []Option     `json:"worries"`
 	Popular       []ShrineCard `json:"popular"`
@@ -77,11 +70,7 @@ var topData = TopResponse{
 		{Name: "下町", Areas: areaOptions("taito", "sumida", "koto")},
 		{Name: "西エリア", Areas: areaOptions("suginami", "setagaya", "musashino")},
 	},
-	RecentLogs: []VisitLog{
-		{ID: "log-1024", Date: "10月24日", Title: "日枝神社 → 赤坂で軽く一杯", Worry: "仕事・出世"},
-		{ID: "log-1020", Date: "10月20日", Title: "赤城神社 → 神楽坂の和食店", Worry: "仕事・出世"},
-		{ID: "log-1017", Date: "10月17日", Title: "出雲大社東京分祠 → 六本木で一杯", Worry: "恋愛・縁結び"},
-	},
+	RecentLogs:    recentLogs(3),
 	InstagramUser: "jinja_meshinomi",
 }
 
