@@ -1,5 +1,4 @@
 import {
-  createBrowserRouter,
   data,
   isRouteErrorResponse,
   Outlet,
@@ -7,6 +6,7 @@ import {
   useNavigation,
   useRouteError,
   type LoaderFunctionArgs,
+  type RouteObject,
 } from "react-router";
 import { fetchAreas, fetchFeature, fetchFeatures, fetchLog, fetchLogs, fetchStations, fetchShrine, fetchShrines, fetchTop, NotFoundError } from "./api";
 import { loadSaved } from "./saved";
@@ -102,7 +102,8 @@ function RouteError() {
 
 const loading = <p className="container page-status">読み込み中…</p>;
 
-export const router = createBrowserRouter([
+// ブラウザ（main.tsx）とビルド時の描画（entry-server.tsx）で共通のルート定義
+export const routes: RouteObject[] = [
   {
     element: <Layout />,
     children: [
@@ -128,4 +129,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+];

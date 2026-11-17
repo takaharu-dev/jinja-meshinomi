@@ -61,3 +61,12 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 ```sh
 make test
 ```
+
+## ページの書き出し（プリレンダリング）
+
+`npm run build` の最後に `frontend/scripts/prerender.mjs` が動き、API の `sitemap.xml` にある URL（＋ /contact・/privacy）を HTML に書き出します（`dist/shrines/atago/index.html` など）。初期 HTML に本文が入るので、JavaScript を実行しない検索エンジンでも内容が読めます。ブラウザではその HTML を引き継いで（hydrate）今までどおり動きます。
+
+- データは本番の API（`PRERENDER_API_URL` で変更可）から取得します。Vercel の本番ビルドでは、backend が同じコミットでデプロイされるのを `/api/health` の `commit` で待ってから取得します
+- 書き出していないページ（保存リスト・クエリ付きの一覧・ビルド後に増えたページ）は `dist/spa.html` を返し、ブラウザで描画します
+- データを変えたら main に push すれば、frontend も再ビルドされて反映されます
+- `SKIP_PRERENDER=1` で書き出しを省けます（Docker ではこれを指定）

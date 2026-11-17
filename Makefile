@@ -28,8 +28,9 @@ dev: frontend/node_modules ## Go と Vite を同時に起動（http://localhost:
 	(cd frontend && npm run dev) & \
 	wait
 
-test: ## テスト
+test: frontend/node_modules ## テスト
 	cd backend && go vet ./... && go test ./...
+	cd frontend && npm test
 
 build: frontend/node_modules ## フロントをビルド
 	cd frontend && npm run build
