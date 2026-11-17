@@ -70,6 +70,8 @@ type Shrine struct {
 	Highlight string // 見どころ（未入力なら詳細ページに出さない）
 	MainPhoto string // メイン写真の説明（仮置き）
 	Shops     []Shop // 参拝後のお店（未入力なら仮置きのお店を出す）
+
+	Unlisted bool // true にすると sitemap.xml に載せない（未完成のページ用）
 }
 
 type Shop struct {

@@ -36,6 +36,7 @@ make dev    # 開発用：Go と Vite を同時に起動 → http://localhost:51
 | GET | `/api/logs` | 参拝記録の一覧（新しい順） |
 | GET | `/api/logs/{id}` | 参拝記録の記事（本文・写真・参拝した神社・寄ったお店・ほかの記録）。存在しなければ 404 |
 | GET | `/api/shrines/{id}` | 神社の詳細（情報・参拝後のお店・地酒・アクセス・関連する神社）。存在しなければ 404 |
+| GET | `/api/sitemap.xml` | sitemap.xml（神社・特集・参拝記録のデータから自動生成。各データの `Unlisted: true` で除外。URL のドメインは環境変数 `SITE_URL`、未指定なら `https://jinja-meshinomi.vercel.app`）。公開サイトの `/sitemap.xml` はここへリライト |
 
 ## 画面
 
