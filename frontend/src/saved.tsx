@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useSyncExternalStore, type ReactNode } from "react";
 
 // 保存リスト（いまはこのブラウザ内だけに保存）
 const KEY = "jinja-meshinomi:saved";
@@ -17,22 +17,41 @@ export function loadSaved(): string[] {
   }
 }
 
-export function SavedProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<string[]>(loadSaved);
+// ---------- 保存状態のストア ----------
+// ビルド時に書き出したページは「何も保存していない」状態で描画される。
+// useSyncExternalStore の getServerSnapshot（空）でハイドレーションしてから、
+// このブラウザの保存状態に切り替えるので、サーバーとブラウザで表示がずれない。
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(KEY, JSON.stringify(ids));
-    } catch {
-      // プライベートブラウズなどで保存できなくても画面は動かす
-    }
-  }, [ids]);
+const EMPTY: string[] = [];
+let current: string[] | null = null;
+const listeners = new Set<() => void>();
+
+const getSnapshot = () => (current ??= loadSaved());
+const getServerSnapshot = () => EMPTY;
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function save(next: string[]) {
+  current = next;
+  try {
+    localStorage.setItem(KEY, JSON.stringify(next));
+  } catch {
+    // プライベートブラウズなどで保存できなくても画面は動かす
+  }
+  listeners.forEach((l) => l());
+}
+
+export function SavedProvider({ children }: { children: ReactNode }) {
+  const ids = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const has = useCallback((id: string) => ids.includes(id), [ids]);
-  const toggle = useCallback(
-    (id: string) => setIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])),
-    [],
-  );
+  const toggle = useCallback((id: string) => {
+    const prev = getSnapshot();
+    save(prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+  }, []);
 
   return <SavedContext.Provider value={{ has, toggle }}>{children}</SavedContext.Provider>;
 }

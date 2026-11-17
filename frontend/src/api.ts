@@ -2,8 +2,15 @@ import type { AreaGroupCount, Feature, FeatureDetail, StationGroup, VisitLog, Vi
 
 export class NotFoundError extends Error {}
 
+// ブラウザでは同じドメインの /api を使う。ビルド時の描画では API の URL を setApiBase で指定する
+let apiBase = "";
+
+export function setApiBase(base: string) {
+  apiBase = base.replace(/\/$/, "");
+}
+
 async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const res = await fetch(path, { signal });
+  const res = await fetch(apiBase + path, { signal });
   if (res.status === 404) throw new NotFoundError(path);
   if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
   return res.json();

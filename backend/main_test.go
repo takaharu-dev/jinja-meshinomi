@@ -60,6 +60,43 @@ func TestStatic(t *testing.T) {
 	}
 }
 
+// ビルド時に書き出したページがあればそれを、なければ spa.html を返す
+func TestStaticPrerendered(t *testing.T) {
+	dir := t.TempDir()
+	mustWrite(t, filepath.Join(dir, "index.html"), "<h1>top</h1>")
+	mustWrite(t, filepath.Join(dir, "spa.html"), "<p>spa</p>")
+	mustWrite(t, filepath.Join(dir, "shrines", "index.html"), "<h1>list</h1>")
+	mustWrite(t, filepath.Join(dir, "shrines", "atago", "index.html"), "<h1>atago</h1>")
+	mux := newMux(dir)
+
+	cases := []struct{ target, wantBody string }{
+		{"/", "top"},
+		{"/shrines", "list"},
+		{"/shrines/", "list"},
+		{"/shrines/atago", "atago"},
+		{"/shrines/new-shrine", "spa"}, // まだ書き出していないページ
+		{"/saved", "spa"},
+	}
+	for _, c := range cases {
+		rec := serve(mux, http.MethodGet, c.target)
+		if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), c.wantBody) {
+			t.Errorf("%s: code=%d body=%q", c.target, rec.Code, rec.Body.String())
+		}
+	}
+}
+
+func TestHealthCommit(t *testing.T) {
+	t.Setenv("VERCEL_GIT_COMMIT_SHA", "abc123")
+	rec := serve(newMux(""), http.MethodGet, "/api/health")
+	var got map[string]string
+	if err := json.NewDecoder(rec.Body).Decode(&got); err != nil {
+		t.Fatal(err)
+	}
+	if got["status"] != "ok" || got["commit"] != "abc123" {
+		t.Errorf("health = %v", got)
+	}
+}
+
 func mustWrite(t *testing.T, name, body string) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(name), 0o755); err != nil {

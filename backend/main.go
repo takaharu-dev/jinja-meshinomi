@@ -27,7 +27,8 @@ func main() {
 func newMux(staticDir string) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
-		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+		// commit：フロントのビルドが「この API が自分と同じコミットか」を確かめるのに使う（Vercel 以外では空）
+		writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "commit": os.Getenv("VERCEL_GIT_COMMIT_SHA")})
 	})
 	mux.HandleFunc("GET /api/top", handleTop)
 	mux.HandleFunc("GET /api/shrines", handleShrines)
@@ -47,22 +48,39 @@ func newMux(staticDir string) *http.ServeMux {
 	return mux
 }
 
-// spaHandler は静的ファイルを返し、存在しないパスは index.html を返す（React 側のルーティング用）。
+// spaHandler は静的ファイルを返す。
+// ビルド時に書き出したページ（例：shrines/atago/index.html）があればそれを返し、
+// なければ SPA 用の空の HTML（spa.html、なければ index.html）を返して React 側で描画する。
 func spaHandler(root fs.FS) http.Handler {
 	files := http.FileServerFS(root)
+	fallback := "index.html"
+	if _, err := fs.Stat(root, "spa.html"); err == nil {
+		fallback = "spa.html"
+	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/api/") {
 			http.NotFound(w, r)
 			return
 		}
 		name := strings.TrimPrefix(path.Clean(r.URL.Path), "/")
-		if name != "" {
-			if info, err := fs.Stat(root, name); err == nil && !info.IsDir() {
-				files.ServeHTTP(w, r)
+		if name == "" {
+			name = "index.html"
+		}
+		info, err := fs.Stat(root, name)
+		if err == nil && info.IsDir() {
+			name = path.Join(name, "index.html")
+			info, err = fs.Stat(root, name)
+		}
+		if err == nil && !info.IsDir() {
+			if strings.HasSuffix(name, ".html") {
+				// FileServer は /index.html などをリダイレクトするので、HTML は直接返す
+				http.ServeFileFS(w, r, root, name)
 				return
 			}
+			files.ServeHTTP(w, r)
+			return
 		}
-		http.ServeFileFS(w, r, root, "index.html")
+		http.ServeFileFS(w, r, root, fallback)
 	})
 }
 
