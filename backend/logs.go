@@ -15,6 +15,8 @@ type logDef struct {
 	Title  string
 	Shop   Shop
 	Body   []string
+
+	Unlisted bool // true にすると sitemap.xml に載せない（未完成のページ用）
 }
 
 // 新しい順に並べておく

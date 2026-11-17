@@ -38,6 +38,9 @@ func newMux(staticDir string) *http.ServeMux {
 	mux.HandleFunc("GET /api/features/{id}", handleFeature)
 	mux.HandleFunc("GET /api/logs", handleLogs)
 	mux.HandleFunc("GET /api/logs/{id}", handleLog)
+	mux.HandleFunc("GET /api/sitemap.xml", handleSitemap)
+	// Go がフロントも配信するとき（Docker）用。Vercel では vercel.json のリライトで /api/sitemap.xml に転送する
+	mux.HandleFunc("GET /sitemap.xml", handleSitemap)
 	if staticDir != "" {
 		mux.Handle("GET /", spaHandler(os.DirFS(staticDir)))
 	}

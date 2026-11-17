@@ -17,6 +17,7 @@ type featureDef struct {
 	Summary  string
 	Lead     string
 	Query    url.Values // /api/shrines と同じ条件
+	Unlisted bool       // true にすると sitemap.xml に載せない（未完成のページ用）
 }
 
 var featureDefs = []featureDef{
