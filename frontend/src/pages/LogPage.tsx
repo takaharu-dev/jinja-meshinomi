@@ -3,13 +3,14 @@ import type { VisitLogDetail } from "../types";
 import Placeholder from "../components/Placeholder";
 import LogRow from "../components/LogRow";
 import { formatDate } from "../date";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { logDescription } from "../descriptions";
 import "./LogsPage.css";
 import "./ShrineDetailPage.css";
 
 export default function LogPage() {
   const l = useLoaderData() as VisitLogDetail;
-  useDocumentTitle(l.title);
+  usePageMeta({ title: l.title, description: logDescription(l), type: "article" });
 
   return (
     <article className="container logpage logpage--detail">

@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { INSTAGRAM_URL, INSTAGRAM_USER } from "../constants";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS } from "../descriptions";
 import "./DocPage.css";
 
 // 文章は仮置き。あとで差し替える想定
@@ -14,7 +15,7 @@ const GUIDES = [
 ];
 
 export default function AboutPage() {
-  useDocumentTitle("このサイトについて");
+  usePageMeta({ title: "このサイトについて", description: LEADS.about });
   return (
     <article className="container doc">
       <div className="phead">
@@ -23,7 +24,7 @@ export default function AboutPage() {
         </nav>
         <h1>このサイトについて</h1>
         <p className="doc__lead">
-          神社めし呑みは、悩んだ日に行きたい神社と、参拝のあとに寄りたいごはん・地酒のお店を紹介するサイトです。
+          {LEADS.about}
         </p>
       </div>
 

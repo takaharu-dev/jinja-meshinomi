@@ -1,11 +1,12 @@
 import { Link, useLoaderData } from "react-router";
 import type { AreaGroupCount } from "../types";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS, areasDescription } from "../descriptions";
 import "./AreasPage.css";
 
 export default function AreasPage() {
   const groups = useLoaderData() as AreaGroupCount[];
-  useDocumentTitle("エリアから探す");
+  usePageMeta({ title: "エリアから探す", description: areasDescription(groups) });
 
   return (
     <div className="container apage">
@@ -14,7 +15,7 @@ export default function AreasPage() {
           <Link to="/">神社めし呑み</Link> ＞ エリアから探す
         </nav>
         <h1>エリアから探す</h1>
-        <p className="apage__lead">行きたいエリアを選ぶと、そのエリアの神社と参拝後のお店が見られます。</p>
+        <p className="apage__lead">{LEADS.areas}</p>
       </div>
 
       {groups.map((g) => (

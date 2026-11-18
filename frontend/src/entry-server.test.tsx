@@ -19,6 +19,16 @@ describe("render", () => {
     expect(page.html).toContain('href="/shrines"');
   });
 
+  it("title・description・canonical・OGP を head に入れる（#root には入れない）", async () => {
+    const page = await render("/about", ORIGIN);
+    expect(page.head).toContain("<title>このサイトについて｜神社めし呑み</title>");
+    expect(page.head).toContain('<meta name="description" content="神社めし呑みは、');
+    expect(page.head).toContain('<link rel="canonical" href="https://jinja-meshinomi.vercel.app/about" />');
+    expect(page.head).toContain('<meta property="og:image" content="https://jinja-meshinomi.vercel.app/ogp.png" />');
+    expect(page.html).not.toContain("<title");
+    expect(page.html).not.toContain("<meta");
+  });
+
   it("loader のデータを API から取り、hydrationData に入れる", async () => {
     const fetch = vi.fn(async (_url: string) => new Response(JSON.stringify([]), { status: 200 }));
     vi.stubGlobal("fetch", fetch);

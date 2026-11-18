@@ -1,12 +1,13 @@
 import { Link, useLoaderData } from "react-router";
 import type { Feature } from "../types";
 import FeatureCard from "../components/FeatureCard";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS, featuresDescription } from "../descriptions";
 import "./FeaturesPage.css";
 
 export default function FeaturesPage() {
   const features = useLoaderData() as Feature[];
-  useDocumentTitle("特集");
+  usePageMeta({ title: "特集", description: featuresDescription(features) });
 
   return (
     <div className="container fpage">
@@ -15,7 +16,7 @@ export default function FeaturesPage() {
           <Link to="/">神社めし呑み</Link> ＞ 特集
         </nav>
         <h1>特集</h1>
-        <p className="apage__lead">悩みや気分に合わせて、神社と参拝後の一杯を選びました。</p>
+        <p className="apage__lead">{LEADS.features}</p>
       </div>
       <div className="fgrid">
         {features.map((f) => (

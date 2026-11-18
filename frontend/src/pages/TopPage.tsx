@@ -6,12 +6,12 @@ import Features from "../components/top/Features";
 import AreaList from "../components/top/AreaList";
 import RecentLogs from "../components/top/RecentLogs";
 import InstagramBanner from "../components/top/InstagramBanner";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
 import "./TopPage.css";
 
 export default function TopPage() {
   const data = useLoaderData() as TopResponse;
-  useDocumentTitle();
+  usePageMeta({});
 
   return (
     <>

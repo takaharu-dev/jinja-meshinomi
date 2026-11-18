@@ -16,9 +16,13 @@ export function outputFile(path) {
  * テンプレート（vite build の index.html）の #root に描画結果とデータを入れる。
  * url（描画した URL）も入れておき、ブラウザ側で今の URL と違えばデータを捨てる（src/hydration.ts）
  */
-export function injectPage(template, { url, html, hydrationData }) {
+export function injectPage(template, { url, head, html, hydrationData }) {
   const root = '<div id="root"></div>';
   if (!template.includes(root)) throw new Error("テンプレートに <div id=\"root\"></div> がない");
+  // title・description・OGP の既定値（index.html）をページごとの値に置き換える
+  const meta = /<!-- page-meta -->[\s\S]*?<!-- \/page-meta -->/;
+  if (!meta.test(template)) throw new Error("テンプレートに <!-- page-meta --> 〜 <!-- /page-meta --> がない");
+  template = template.replace(meta, () => `<!-- page-meta -->\n    ${head}\n    <!-- /page-meta -->`);
   // </script> などで閉じられないよう < をエスケープする
   const json = (v) => JSON.stringify(v).replace(/</g, "\\u003c");
   const script = `<script>window.__prerenderedUrl = ${json(url)};window.__staticRouterHydrationData = ${json(hydrationData)};</script>`;

@@ -1,8 +1,8 @@
 import { Link } from "react-router";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
 
 export default function NotFoundPage() {
-  useDocumentTitle("ページが見つかりません");
+  usePageMeta({ title: "ページが見つかりません", noindex: true });
   return (
     <div className="container notfound">
       <h1>ページが見つかりません</h1>
