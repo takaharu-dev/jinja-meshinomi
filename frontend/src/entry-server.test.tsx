@@ -25,6 +25,7 @@ describe("render", () => {
     expect(page.head).toContain('<meta name="description" content="神社めし呑みは、');
     expect(page.head).toContain('<link rel="canonical" href="https://jinja-meshinomi.vercel.app/about" />');
     expect(page.head).toContain('<meta property="og:image" content="https://jinja-meshinomi.vercel.app/ogp.png" />');
+    expect(page.head).toContain('<script>window.__prerenderedUrl="/about";');
     expect(page.html).not.toContain("<title");
     expect(page.html).not.toContain("<meta");
   });

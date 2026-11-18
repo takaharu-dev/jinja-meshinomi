@@ -4,6 +4,7 @@ import { renderToString } from "react-dom/server";
 import { createStaticHandler, createStaticRouter, StaticRouterProvider, type HydrationState } from "react-router";
 import { routes } from "./router";
 import { SavedProvider } from "./saved";
+import { staleCheckScript } from "./hydration";
 import { HeadCollectorContext, headTagsToHtml, pageHeadTags, type HeadCollector } from "./pageMeta";
 
 export { setApiBase } from "./api";
@@ -11,7 +12,10 @@ export { SITE_URL } from "./constants";
 
 export type RenderResult = {
   status: number;
-  /** <head> に入れる title・description・canonical・OGP（index.html の <!-- page-meta --> と置き換える） */
+  /**
+   * <head> に入れる title・description・canonical・OGP（index.html の <!-- page-meta --> と置き換える）と、
+   * 今の URL が書き出した URL と違うかを調べるスクリプト（src/hydration.ts の staleCheckScript）
+   */
   head: string;
   /** <div id="root"> の中身 */
   html: string;
@@ -43,7 +47,7 @@ export async function render(path: string, origin: string): Promise<RenderResult
   const tags = collector.tags ?? pageHeadTags({ noindex: true }, path);
   return {
     status: context.statusCode,
-    head: headTagsToHtml(tags),
+    head: `${headTagsToHtml(tags)}\n    <script>${staleCheckScript(path)}</script>`,
     html,
     hydrationData: { loaderData: context.loaderData, actionData: context.actionData, errors: context.errors },
   };

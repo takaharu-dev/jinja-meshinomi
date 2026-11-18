@@ -40,7 +40,7 @@ for (const path of paths) {
   if (!page.html.includes("<h1")) throw new Error(`prerender: ${path} に h1 がない`);
   const file = join(dist, outputFile(path));
   await mkdir(dirname(file), { recursive: true });
-  await writeFile(file, injectPage(template, { url: path, ...page }));
+  await writeFile(file, injectPage(template, page));
 }
 console.log(`prerender: ${paths.length} ページを書き出した（API: ${API_URL}）`);
 

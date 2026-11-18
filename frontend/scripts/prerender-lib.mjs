@@ -14,9 +14,9 @@ export function outputFile(path) {
 
 /**
  * テンプレート（vite build の index.html）の #root に描画結果とデータを入れる。
- * url（描画した URL）も入れておき、ブラウザ側で今の URL と違えばデータを捨てる（src/hydration.ts）
+ * 描画した URL は head のスクリプトが window.__prerenderedUrl に入れる（src/hydration.ts の staleCheckScript）
  */
-export function injectPage(template, { url, head, html, hydrationData }) {
+export function injectPage(template, { head, html, hydrationData }) {
   const root = '<div id="root"></div>';
   if (!template.includes(root)) throw new Error("テンプレートに <div id=\"root\"></div> がない");
   // title・description・OGP の既定値（index.html）をページごとの値に置き換える
@@ -24,7 +24,7 @@ export function injectPage(template, { url, head, html, hydrationData }) {
   if (!meta.test(template)) throw new Error("テンプレートに <!-- page-meta --> 〜 <!-- /page-meta --> がない");
   template = template.replace(meta, () => `<!-- page-meta -->\n    ${head}\n    <!-- /page-meta -->`);
   // </script> などで閉じられないよう < をエスケープする
-  const json = (v) => JSON.stringify(v).replace(/</g, "\\u003c");
-  const script = `<script>window.__prerenderedUrl = ${json(url)};window.__staticRouterHydrationData = ${json(hydrationData)};</script>`;
+  const json = JSON.stringify(hydrationData).replace(/</g, "\\u003c");
+  const script = `<script>window.__staticRouterHydrationData = ${json};</script>`;
   return template.replace(root, () => `<div id="root">${html}</div>${script}`);
 }
