@@ -12,12 +12,15 @@ export function outputFile(path) {
   return clean === "" ? "index.html" : `${clean}/index.html`;
 }
 
-/** テンプレート（vite build の index.html）の #root に描画結果とデータを入れる */
-export function injectPage(template, { html, hydrationData }) {
+/**
+ * テンプレート（vite build の index.html）の #root に描画結果とデータを入れる。
+ * url（描画した URL）も入れておき、ブラウザ側で今の URL と違えばデータを捨てる（src/hydration.ts）
+ */
+export function injectPage(template, { url, html, hydrationData }) {
   const root = '<div id="root"></div>';
   if (!template.includes(root)) throw new Error("テンプレートに <div id=\"root\"></div> がない");
   // </script> などで閉じられないよう < をエスケープする
-  const json = JSON.stringify(hydrationData).replace(/</g, "\\u003c");
-  const script = `<script>window.__staticRouterHydrationData = ${json};</script>`;
+  const json = (v) => JSON.stringify(v).replace(/</g, "\\u003c");
+  const script = `<script>window.__prerenderedUrl = ${json(url)};window.__staticRouterHydrationData = ${json(hydrationData)};</script>`;
   return template.replace(root, () => `<div id="root">${html}</div>${script}`);
 }

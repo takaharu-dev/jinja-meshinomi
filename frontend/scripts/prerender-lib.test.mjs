@@ -30,16 +30,19 @@ describe("injectPage", () => {
   const template = '<html><body><div id="root"></div><script type="module" src="/a.js"></script></body></html>';
 
   it("#root に本文、その直後にデータを入れる", () => {
-    const out = injectPage(template, { html: "<h1>愛宕神社</h1>", hydrationData: { loaderData: { a: 1 } } });
-    expect(out).toContain('<div id="root"><h1>愛宕神社</h1></div><script>window.__staticRouterHydrationData = {"loaderData":{"a":1}};</script>');
+    const out = injectPage(template, { url: "/shrines/atago", html: "<h1>愛宕神社</h1>", hydrationData: { loaderData: { a: 1 } } });
+    expect(out).toContain(
+      '<div id="root"><h1>愛宕神社</h1></div><script>window.__prerenderedUrl = "/shrines/atago";window.__staticRouterHydrationData = {"loaderData":{"a":1}};</script>',
+    );
   });
 
   it("データ内の </script> で閉じられない", () => {
-    const out = injectPage(template, { html: "", hydrationData: { s: "</script><script>alert(1)" } });
+    const out = injectPage(template, { url: "/</script>", html: "", hydrationData: { s: "</script><script>alert(1)" } });
     expect(out).not.toContain("</script><script>alert(1)");
+    expect(out).not.toContain('"/</script>"');
   });
 
   it("$& などの置換パターンをそのまま入れる", () => {
-    expect(injectPage(template, { html: "<p>$&</p>", hydrationData: {} })).toContain("<p>$&</p>");
+    expect(injectPage(template, { url: "/", html: "<p>$&</p>", hydrationData: {} })).toContain("<p>$&</p>");
   });
 });
