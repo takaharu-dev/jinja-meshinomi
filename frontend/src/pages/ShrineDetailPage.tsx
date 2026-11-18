@@ -3,7 +3,8 @@ import { Link, useLoaderData } from "react-router";
 import type { InfoRow, ShrineDetail } from "../types";
 import Placeholder from "../components/Placeholder";
 import SaveButton from "../components/SaveButton";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { shrineDescription } from "../descriptions";
 import "./ShrineDetailPage.css";
 
 const TABS = [
@@ -16,7 +17,7 @@ const TABS = [
 
 export default function ShrineDetailPage() {
   const d = useLoaderData() as ShrineDetail;
-  useDocumentTitle(d.name);
+  usePageMeta({ title: d.name, description: shrineDescription(d), type: "article" });
   // 関連する神社へ移動したときにタブの状態などをリセットする
   return <Detail key={d.id} d={d} />;
 }

@@ -2,7 +2,8 @@ import { Link, useLoaderData, useNavigation, useSearchParams } from "react-route
 import type { ShrineListResponse, SortKey } from "../types";
 import FilterRow from "../components/list/FilterRow";
 import ShrineRow from "../components/list/ShrineRow";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { shrineListDescription } from "../descriptions";
 import "./ShrineListPage.css";
 
 const SORTS: { key: SortKey; label: string }[] = [
@@ -26,7 +27,7 @@ export default function ShrineListPage() {
       : data.q
         ? `「${data.q}」の神社と参拝後のお店`
         : "神社と参拝後のお店";
-  useDocumentTitle(heading);
+  usePageMeta({ title: heading, description: shrineListDescription(heading, data) });
 
   // 条件は URL に持たせる（戻る・共有ができるように）
   const update = (fn: (p: URLSearchParams) => void) => {

@@ -11,7 +11,6 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { injectPage, outputFile, pathsFromSitemap } from "./prerender-lib.mjs";
 
-const SITE_URL = "https://jinja-meshinomi.vercel.app";
 const API_URL = (process.env.PRERENDER_API_URL ?? "https://backend-five-navy-16.vercel.app").replace(/\/$/, "");
 // sitemap には載せていないが、HTML は書き出しておくページ
 const EXTRA_PATHS = ["/contact", "/privacy"];
@@ -28,7 +27,7 @@ if (process.env.SKIP_PRERENDER) {
 
 await waitForBackend();
 
-const { render, setApiBase } = await import(join(root, "dist-server", "entry-server.js"));
+const { render, setApiBase, SITE_URL } = await import(join(root, "dist-server", "entry-server.js"));
 setApiBase(API_URL);
 
 const template = await readFile(join(dist, "spa.html"), "utf8");

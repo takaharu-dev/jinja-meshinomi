@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- 共通の OGP 画像（public/ogp.png）の元。作り方は README.md -->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=block" />
+    <style>
+      /* 色は src/styles/global.css と同じ */
+      :root {
+        --shu: #e9524e;
+        --ink: #1a1a1a;
+        --sub: #666;
+        --cream: #faf7f2;
+        --cream-line: #eee7dd;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        box-sizing: border-box;
+        background: var(--cream);
+        border-top: 16px solid var(--shu);
+        font-family: "Noto Sans JP", sans-serif;
+        color: var(--ink);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 96px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 56px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+      }
+      .catch {
+        margin: 56px 0 0;
+        font-size: 64px;
+        font-weight: 900;
+        line-height: 1.3;
+      }
+      .mark {
+        position: absolute;
+        right: 88px;
+        bottom: 72px;
+        opacity: 0.14;
+      }
+      .rule {
+        width: 96px;
+        height: 6px;
+        margin-top: 56px;
+        background: var(--shu);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="logo">
+        <!-- src/components/Logo.tsx と同じ鳥居 -->
+        <svg width="84" height="82" viewBox="0 0 204 200" aria-hidden="true">
+          <path d="M40 34L54 34L50 190L34 190Z M146 34L160 34L166 190L150 190Z M14 24L186 24L183 34L17 34Z" fill="#e9524e" />
+          <rect x="2" y="58" width="196" height="11" fill="#e9524e" />
+          <rect x="93" y="34" width="14" height="24" fill="#e9524e" />
+          <path d="M0 0Q12 12 34 14L166 14Q188 12 204 0L204 8Q190 23 168 25L32 25Q10 23 0 8Z" fill="#1a1a1a" />
+        </svg>
+        神社めし呑み
+      </div>
+      <p class="catch">モヤモヤした日は、<br />神社と一杯。</p>
+      <div class="rule"></div>
+      <svg class="mark" width="400" height="392" viewBox="0 0 204 200" aria-hidden="true">
+        <path d="M40 34L54 34L50 190L34 190Z M146 34L160 34L166 190L150 190Z M14 24L186 24L183 34L17 34Z" fill="#e9524e" />
+        <rect x="2" y="58" width="196" height="11" fill="#e9524e" />
+        <rect x="93" y="34" width="14" height="24" fill="#e9524e" />
+        <path d="M0 0Q12 12 34 14L166 14Q188 12 204 0L204 8Q190 23 168 25L32 25Q10 23 0 8Z" fill="#e9524e" />
+      </svg>
+    </div>
+  </body>
+</html>

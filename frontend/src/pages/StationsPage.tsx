@@ -1,11 +1,12 @@
 import { Link, useLoaderData } from "react-router";
 import type { StationGroup } from "../types";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS, stationsDescription } from "../descriptions";
 import "./AreasPage.css";
 
 export default function StationsPage() {
   const groups = useLoaderData() as StationGroup[];
-  useDocumentTitle("駅から探す");
+  usePageMeta({ title: "駅から探す", description: stationsDescription(groups) });
 
   return (
     <div className="container apage">
@@ -14,7 +15,7 @@ export default function StationsPage() {
           <Link to="/">神社めし呑み</Link> ＞ 駅から探す
         </nav>
         <h1>駅から探す</h1>
-        <p className="apage__lead">最寄り駅を選ぶと、その駅から行ける神社と参拝後のお店が見られます。</p>
+        <p className="apage__lead">{LEADS.stations}</p>
       </div>
 
       {groups.map((g) => (

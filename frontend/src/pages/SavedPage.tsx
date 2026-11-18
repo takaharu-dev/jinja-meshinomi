@@ -1,13 +1,14 @@
 import { Link, useLoaderData } from "react-router";
 import type { ShrineItem } from "../types";
 import ShrineRow from "../components/list/ShrineRow";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS } from "../descriptions";
 import "./ShrineListPage.css";
 
 export default function SavedPage() {
   // 開いた時点の保存リスト。♡ を外してもすぐには消さない（押し間違えたときに戻せるように）
   const items = useLoaderData() as ShrineItem[];
-  useDocumentTitle("保存リスト");
+  usePageMeta({ title: "保存リスト", description: LEADS.saved, noindex: true });
 
   return (
     <div className="container lpage">

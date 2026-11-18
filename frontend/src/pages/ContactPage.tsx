@@ -1,10 +1,11 @@
 import { Link } from "react-router";
 import { INSTAGRAM_URL, INSTAGRAM_USER } from "../constants";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS } from "../descriptions";
 import "./DocPage.css";
 
 export default function ContactPage() {
-  useDocumentTitle("お問い合わせ");
+  usePageMeta({ title: "お問い合わせ", description: LEADS.contact });
   return (
     <article className="container doc">
       <div className="phead">
@@ -13,7 +14,7 @@ export default function ContactPage() {
         </nav>
         <h1>お問い合わせ</h1>
         <p className="doc__lead">
-          ご意見・ご感想、掲載内容の誤りのお知らせ、掲載のご相談などは、Instagram の DM（ダイレクトメッセージ）で受け付けています。
+          {LEADS.contact}
         </p>
       </div>
 

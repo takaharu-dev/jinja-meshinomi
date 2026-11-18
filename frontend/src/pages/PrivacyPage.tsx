@@ -1,10 +1,11 @@
 import { Link } from "react-router";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { LEADS } from "../descriptions";
 import "./DocPage.css";
 
 // ひな形。公開前に内容を確認する
 export default function PrivacyPage() {
-  useDocumentTitle("プライバシーポリシー");
+  usePageMeta({ title: "プライバシーポリシー", description: LEADS.privacy });
   return (
     <article className="container doc">
       <div className="phead">
@@ -13,7 +14,7 @@ export default function PrivacyPage() {
         </nav>
         <h1>プライバシーポリシー</h1>
         <p className="doc__lead">
-          神社めし呑み（以下「当サイト」）は、利用者の情報を以下のとおり取り扱います。
+          {LEADS.privacy}
         </p>
       </div>
 

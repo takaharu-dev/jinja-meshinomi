@@ -3,13 +3,14 @@ import type { FeatureDetail } from "../types";
 import Placeholder from "../components/Placeholder";
 import FeatureCard from "../components/FeatureCard";
 import ShrineRow from "../components/list/ShrineRow";
-import { useDocumentTitle } from "../useDocumentTitle";
+import { usePageMeta } from "../pageMeta";
+import { featureDescription } from "../descriptions";
 import "./FeaturesPage.css";
 import "./ShrineListPage.css";
 
 export default function FeaturePage() {
   const f = useLoaderData() as FeatureDetail;
-  useDocumentTitle(f.title);
+  usePageMeta({ title: f.title, description: featureDescription(f), type: "article" });
 
   return (
     <article className="container fpage">
