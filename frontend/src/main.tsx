@@ -6,9 +6,15 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { routes } from "./router";
 import { SavedProvider } from "./saved";
+import { acceptPrerenderedData, type PrerenderedWindow } from "./hydration";
+
+const container = document.getElementById("root")!;
 
 // ビルド時に書き出したページでは、window.__staticRouterHydrationData（取得済みのデータ）を
-// createBrowserRouter が読み込むので、API を呼び直さずにそのまま表示を引き継ぐ
+// createBrowserRouter が読み込むので、API を呼び直さずにそのまま表示を引き継ぐ。
+// ただし書き出したときと URL が違う（/shrines?worry=career など）ならデータを捨てて、ブラウザで描画し直す。
+// router を作る前に判定する（作るときにデータを読むため）
+const prerendered = container.hasChildNodes() && acceptPrerenderedData(window as PrerenderedWindow, location);
 const router = createBrowserRouter(routes);
 
 const app = (
@@ -19,10 +25,9 @@ const app = (
   </StrictMode>
 );
 
-const container = document.getElementById("root")!;
-if (container.hasChildNodes()) {
+if (prerendered) {
   hydrateRoot(container, app);
 } else {
-  // 書き出していないページ（保存リストなど）は今までどおりブラウザで描画する
+  // 書き出していないページ（保存リストなど）や URL が違うページは、ブラウザで描画する（書き出した中身は置き換わる）
   createRoot(container).render(app);
 }
