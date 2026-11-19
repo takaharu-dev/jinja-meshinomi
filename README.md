@@ -66,7 +66,12 @@ make test
 
 `npm run build` の最後に `frontend/scripts/prerender.mjs` が動き、API の `sitemap.xml` にある URL（＋ /contact・/privacy）を HTML に書き出します（`dist/shrines/atago/index.html` など）。初期 HTML に本文が入るので、JavaScript を実行しない検索エンジンでも内容が読めます。ブラウザではその HTML を引き継いで（hydrate）今までどおり動きます。
 
-- データは本番の API（`PRERENDER_API_URL` で変更可）から取得します。Vercel の本番ビルドでは、backend が同じコミットでデプロイされるのを `/api/health` の `commit` で待ってから取得します
+- データは本番の API（`PRERENDER_API_URL` で変更可）から取得します。backend のデプロイは待たず、その時点で本番に出ている backend のデータで書き出します
 - 書き出していないページ（保存リスト・クエリ付きの一覧・ビルド後に増えたページ）は `dist/spa.html` を返し、ブラウザで描画します
-- データを変えたら main に push すれば、frontend も再ビルドされて反映されます
+- データ（`backend/`）を変えて main に push すると、backend の本番デプロイが終わったあとに GitHub Actions（`.github/workflows/rebuild-frontend.yml`）が frontend の Deploy Hook を呼び、新しいデータで書き出し直します
+
+### Deploy Hook の設定（最初に1回）
+
+1. Vercel の jinja-meshinomi（frontend）プロジェクトで Settings → Git → Deploy Hooks を開き、名前（例：`rebuild-after-backend`）とブランチ `main` で作成して URL をコピー
+2. GitHub のリポジトリで Settings → Secrets and variables → Actions → New repository secret を開き、名前 `FRONTEND_DEPLOY_HOOK_URL`、値にコピーした URL を登録
 - `SKIP_PRERENDER=1` で書き出しを省けます（Docker ではこれを指定）

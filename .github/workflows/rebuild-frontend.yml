@@ -1,0 +1,71 @@
+# backend の本番デプロイが終わったら、frontend を作り直す。
+#
+# frontend のビルド（プリレンダリング）は、その時点で本番に出ている backend のデータで HTML を書き出す。
+# main に push すると frontend と backend が同時にビルドされるので、backend のデータを変えたコミットでは
+# frontend が古いデータで書き出すことがある。backend の本番デプロイが終わってから frontend を作り直して直す。
+# （frontend のビルドの中で backend を待つと、同時に走るビルドが1つのとき詰まる。#39）
+#
+# 必要な Secret：FRONTEND_DEPLOY_HOOK_URL（Vercel の jinja-meshinomi プロジェクトの Deploy Hook。README 参照）
+name: backend のデプロイ後に frontend を作り直す
+
+on:
+  # Vercel がコミットに付けるステータス（「Vercel – backend」など）が変わったとき
+  status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rebuild-frontend
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    if: >-
+      github.event.context == 'Vercel – backend' &&
+      github.event.state == 'success' &&
+      contains(github.event.branches.*.name, 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.sha }}
+          fetch-depth: 2
+
+      # PR のマージコミットなら、1つ目の親（マージ前の main）との差分 ＝ PR 全体の変更
+      - name: このコミットで backend/ が変わったか
+        id: diff
+        run: |
+          if git diff --quiet HEAD^1 HEAD -- backend/; then
+            echo "backend/ は変わっていないので、frontend は作り直さない"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 本番の backend がこのコミットになったか確かめる
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          SHA: ${{ github.event.sha }}
+        run: |
+          for i in $(seq 1 18); do
+            commit=$(curl -fsS https://backend-five-navy-16.vercel.app/api/health | jq -r .commit || true)
+            if [ "$commit" = "$SHA" ]; then exit 0; fi
+            echo "本番の backend は ${commit:-不明}。待つ（$i/18）"
+            sleep 10
+          done
+          echo "::error::本番の backend が ${SHA} にならない"
+          exit 1
+
+      - name: frontend の Deploy Hook を呼ぶ
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          HOOK: ${{ secrets.FRONTEND_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::Secret FRONTEND_DEPLOY_HOOK_URL が登録されていない（README の「ページの書き出し」参照）"
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK" > /dev/null
+          echo "frontend の本番ビルドを開始した"

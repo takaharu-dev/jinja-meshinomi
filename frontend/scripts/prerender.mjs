@@ -6,6 +6,10 @@
 // 環境変数
 //   PRERENDER_API_URL  データを取る API（既定：本番の backend）
 //   SKIP_PRERENDER=1   書き出さない（Docker など、本番の API を使いたくないとき）
+//
+// backend のデプロイは待たない（今出ている backend のデータで書き出す）。
+// backend のデータを変えたときは、backend の本番デプロイ後に GitHub Actions が frontend を作り直す
+// （.github/workflows/rebuild-frontend.yml）。ビルドの中で待つと、同時に走るビルドが1つのとき詰まる（#39）
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,8 +29,6 @@ if (process.env.SKIP_PRERENDER) {
   process.exit(0);
 }
 
-await waitForBackend();
-
 const { render, setApiBase, SITE_URL } = await import(join(root, "dist-server", "entry-server.js"));
 setApiBase(API_URL);
 
@@ -42,28 +44,15 @@ for (const path of paths) {
   await mkdir(dirname(file), { recursive: true });
   await writeFile(file, injectPage(template, { url: path, ...page }));
 }
-console.log(`prerender: ${paths.length} ページを書き出した（API: ${API_URL}）`);
+console.log(`prerender: ${paths.length} ページを書き出した（API: ${API_URL}、コミット ${await apiCommit()}）`);
 
-/**
- * Vercel の本番ビルドでは、backend も同じコミットでデプロイされるのを待つ。
- * frontend と backend は main への push で同時にビルドされるので、待たないと古いデータで書き出してしまう。
- */
-async function waitForBackend() {
-  const sha = process.env.VERCEL_GIT_COMMIT_SHA;
-  if (process.env.VERCEL_ENV !== "production" || !sha || process.env.PRERENDER_API_URL) return;
-  const deadline = Date.now() + 10 * 60 * 1000;
-  for (;;) {
-    const commit = await fetch(`${API_URL}/api/health`, { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((j) => j.commit)
-      .catch(() => undefined);
-    if (commit === sha) return;
-    if (Date.now() > deadline) {
-      throw new Error(`prerender: backend が ${sha.slice(0, 7)} にならない（今：${commit || "不明"}）。backend のデプロイを確認してください`);
-    }
-    console.log(`prerender: backend のデプロイ待ち（今：${commit ? commit.slice(0, 7) : "不明"}）`);
-    await new Promise((r) => setTimeout(r, 10_000));
-  }
+/** 書き出しに使う API がどのコミットか（ログ用。backend の /api/health） */
+async function apiCommit() {
+  const commit = await fetch(`${API_URL}/api/health`)
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((j) => j.commit)
+    .catch(() => undefined);
+  return commit ? commit.slice(0, 7) : "不明";
 }
 
 async function fetchText(url) {

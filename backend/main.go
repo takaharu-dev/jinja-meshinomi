@@ -27,7 +27,7 @@ func main() {
 func newMux(staticDir string) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
-		// commit：フロントのビルドが「この API が自分と同じコミットか」を確かめるのに使う（Vercel 以外では空）
+		// commit：GitHub Actions（rebuild-frontend.yml）が「本番の backend がこのコミットになったか」を確かめるのに使う（Vercel 以外では空）
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok", "commit": os.Getenv("VERCEL_GIT_COMMIT_SHA")})
 	})
 	mux.HandleFunc("GET /api/top", handleTop)
