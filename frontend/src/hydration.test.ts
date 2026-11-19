@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createMemoryRouter, createStaticHandler } from "react-router";
-import { acceptPrerenderedData, pageKey, type PrerenderedWindow } from "./hydration";
+import { acceptPrerenderedData, isStaleUrl, staleCheckScript, type PrerenderedWindow } from "./hydration";
 import { routes } from "./router";
 
 const ORIGIN = "https://jinja-meshinomi.vercel.app";
@@ -9,16 +9,46 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("pageKey", () => {
-  it.each([
-    ["/shrines", "", "/shrines"],
-    ["/shrines/", "", "/shrines"],
-    ["/", "", "/"],
-    ["/shrines", "?worry=career", "/shrines?worry=career"],
-    ["/shrines/atago", "?utm_source=instagram&igsh=abc&fbclid=x", "/shrines/atago"],
-    ["/shrines", "?worry=career&utm_medium=social", "/shrines?worry=career"],
-  ])("%s%s → %s", (pathname, search, want) => {
-    expect(pageKey(pathname, search)).toBe(want);
+// [書き出した URL, 開いた pathname, 開いた search, 違うか]
+const CASES: [string, string, string, boolean][] = [
+  ["/shrines", "/shrines", "", false],
+  ["/shrines", "/shrines/", "", false],
+  ["/", "/", "", false],
+  ["/shrines/atago", "/shrines/atago", "?utm_source=instagram&igsh=abc&fbclid=x&gclid=y&_gl=z&igshid=w", false],
+  ["/shrines", "/shrines", "?worry=career", true],
+  ["/shrines", "/shrines", "?worry=career&utm_medium=social", true],
+  ["/shrines", "/shrines", "?area=minato&k=sake", true],
+  ["/shrines", "/shrines", "?station=%E8%B5%A4%E5%9D%82%E9%A7%85&sort=near", true],
+  ["/shrines", "/shrines", "?q=%E6%84%9B%E5%AE%95", true],
+  ["/shrines", "/shrines", "?id=atago", true],
+  ["/shrines/atago", "/shrines/atago", "?foo=1", true],
+  ["/shrines/atago", "/shrines/hie", "", true],
+];
+
+describe("isStaleUrl", () => {
+  it.each(CASES)("書き出し %s / 開いた %s%s → %s", (rendered, pathname, search, want) => {
+    expect(isStaleUrl(rendered, pathname, search)).toBe(want);
+  });
+});
+
+describe("staleCheckScript", () => {
+  /** head のスクリプトを、window・location・document だけがある環境で動かす */
+  function run(script: string, pathname: string, search: string) {
+    const win: { __prerenderedUrl?: string } = {};
+    const attrs: Record<string, string> = {};
+    const document = { documentElement: { setAttribute: (k: string, v: string) => (attrs[k] = v) } };
+    new Function("window", "location", "document", script)(win, { pathname, search }, document);
+    return { win, stale: "data-stale" in attrs };
+  }
+
+  it.each(CASES)("isStaleUrl と同じ結果になる（書き出し %s / 開いた %s%s → %s）", (rendered, pathname, search, want) => {
+    const { win, stale } = run(staleCheckScript(rendered), pathname, search);
+    expect(win.__prerenderedUrl).toBe(rendered);
+    expect(stale).toBe(want);
+  });
+
+  it("URL に </script> があっても閉じられない", () => {
+    expect(staleCheckScript("/</script><script>alert(1)")).not.toContain("</script>");
   });
 });
 

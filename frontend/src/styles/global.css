@@ -276,6 +276,18 @@ button {
   text-align: center;
   color: var(--sub);
 }
+/* 書き出した HTML と URL が違うとき（/shrines?worry=career など、src/hydration.ts）は、
+   ブラウザで描画し直すまで本文を隠す。表示は読み込み中（router.tsx の loading）と同じ */
+html[data-stale] main > * {
+  display: none;
+}
+html[data-stale] main::before {
+  content: "読み込み中…";
+  display: block;
+  padding-block: 64px;
+  text-align: center;
+  color: var(--sub);
+}
 .notfound {
   padding-block: 64px;
   text-align: center;

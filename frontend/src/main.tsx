@@ -1,12 +1,13 @@
 // 共通CSSは各ページのCSSより先に読み込む（ページ側で上書きできるように）
 import "./styles/global.css";
 import { StrictMode } from "react";
+import { flushSync } from "react-dom";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { routes } from "./router";
 import { SavedProvider } from "./saved";
-import { acceptPrerenderedData, type PrerenderedWindow } from "./hydration";
+import { acceptPrerenderedData, STALE_ATTR, type PrerenderedWindow } from "./hydration";
 
 const container = document.getElementById("root")!;
 
@@ -28,6 +29,10 @@ const app = (
 if (prerendered) {
   hydrateRoot(container, app);
 } else {
-  // 書き出していないページ（保存リストなど）や URL が違うページは、ブラウザで描画する（書き出した中身は置き換わる）
-  createRoot(container).render(app);
+  // 書き出していないページ（保存リストなど）や URL が違うページは、ブラウザで描画する（書き出した中身は置き換わる）。
+  // URL が違うときは head のスクリプトが本文を隠しているので、描画し終えてから（flushSync）表示に戻す。
+  // 先に戻すと、描画までの間に書き出した中身（違うページのデータ）が一瞬見える
+  const root = createRoot(container);
+  flushSync(() => root.render(app));
+  document.documentElement.removeAttribute(STALE_ATTR);
 }
