@@ -3,7 +3,7 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_USER}/`;
 
 export const SITE_NAME = "神社めし呑み";
 /** canonical・OGP に使う本番の URL */
-export const SITE_URL = "https://jinja-meshinomi.vercel.app";
+export const SITE_URL = "https://jinja-meshinomi.com";
 /** 写真が揃うまでの共通の OGP 画像（public/ogp.png、作り方は scripts/ogp/README.md） */
 export const OGP_IMAGE = `${SITE_URL}/ogp.png`;
 /** トップページなどの説明文（index.html の既定値と同じ） */

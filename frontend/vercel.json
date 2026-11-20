@@ -1,5 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "jinja-meshinomi.vercel.app" }],
+      "destination": "https://jinja-meshinomi.com/:path",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://backend-five-navy-16.vercel.app/api/:path*" },
     { "source": "/sitemap.xml", "destination": "https://backend-five-navy-16.vercel.app/api/sitemap.xml" },

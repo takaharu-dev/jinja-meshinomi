@@ -4,8 +4,8 @@ import { injectPage, outputFile, pathsFromSitemap } from "./prerender-lib.mjs";
 describe("pathsFromSitemap", () => {
   it("<loc> のパスを取り出す", () => {
     const xml = `<?xml version="1.0"?><urlset>
-      <url><loc>https://jinja-meshinomi.vercel.app/</loc></url>
-      <url><loc>https://jinja-meshinomi.vercel.app/shrines/atago</loc></url>
+      <url><loc>https://jinja-meshinomi.com/</loc></url>
+      <url><loc>https://jinja-meshinomi.com/shrines/atago</loc></url>
     </urlset>`;
     expect(pathsFromSitemap(xml)).toEqual(["/", "/shrines/atago"]);
   });

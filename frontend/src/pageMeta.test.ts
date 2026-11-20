@@ -4,10 +4,10 @@ import { applyHeadTags, canonicalUrl, clampText, headTagsToHtml, pageHeadTags } 
 
 describe("canonicalUrl", () => {
   it.each([
-    ["/", "https://jinja-meshinomi.vercel.app/"],
-    ["/shrines", "https://jinja-meshinomi.vercel.app/shrines"],
-    ["/shrines/", "https://jinja-meshinomi.vercel.app/shrines"],
-    ["/shrines/atago//", "https://jinja-meshinomi.vercel.app/shrines/atago"],
+    ["/", "https://jinja-meshinomi.com/"],
+    ["/shrines", "https://jinja-meshinomi.com/shrines"],
+    ["/shrines/", "https://jinja-meshinomi.com/shrines"],
+    ["/shrines/atago//", "https://jinja-meshinomi.com/shrines/atago"],
   ])("%s → %s", (pathname, want) => {
     expect(canonicalUrl(pathname)).toBe(want);
   });
@@ -30,12 +30,12 @@ describe("pageHeadTags", () => {
     const tags = pageHeadTags({ title: "愛宕神社", description: "説明", type: "article" }, "/shrines/atago/");
     expect(find(tags, "title")).toBe("愛宕神社｜神社めし呑み");
     expect(find(tags, "description")).toBe("説明");
-    expect(find(tags, "canonical")).toBe("https://jinja-meshinomi.vercel.app/shrines/atago");
+    expect(find(tags, "canonical")).toBe("https://jinja-meshinomi.com/shrines/atago");
     expect(find(tags, "og:title")).toBe("愛宕神社｜神社めし呑み");
     expect(find(tags, "og:description")).toBe("説明");
     expect(find(tags, "og:type")).toBe("article");
-    expect(find(tags, "og:url")).toBe("https://jinja-meshinomi.vercel.app/shrines/atago");
-    expect(find(tags, "og:image")).toBe("https://jinja-meshinomi.vercel.app/ogp.png");
+    expect(find(tags, "og:url")).toBe("https://jinja-meshinomi.com/shrines/atago");
+    expect(find(tags, "og:image")).toBe("https://jinja-meshinomi.com/ogp.png");
     expect(find(tags, "og:site_name")).toBe("神社めし呑み");
     expect(find(tags, "twitter:card")).toBe("summary_large_image");
     expect(find(tags, "robots")).toBeUndefined();
@@ -46,7 +46,7 @@ describe("pageHeadTags", () => {
     expect(find(tags, "title")).toBe("神社めし呑み");
     expect(find(tags, "description")).toContain("モヤモヤした日は、神社と一杯。");
     expect(find(tags, "og:type")).toBe("website");
-    expect(find(tags, "canonical")).toBe("https://jinja-meshinomi.vercel.app/");
+    expect(find(tags, "canonical")).toBe("https://jinja-meshinomi.com/");
   });
 
   it("noindex のページは robots を出し、canonical・og:url は出さない", () => {
@@ -73,8 +73,8 @@ describe("applyHeadTags", () => {
     expect(document.title).toBe("愛宕神社｜神社めし呑み");
     expect(document.head.querySelectorAll('meta[name="description"]')).toHaveLength(1);
     expect(document.head.querySelector('meta[name="description"]')?.getAttribute("content")).toBe("説明");
-    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe("https://jinja-meshinomi.vercel.app/shrines/atago");
-    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute("content")).toBe("https://jinja-meshinomi.vercel.app/shrines/atago");
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe("https://jinja-meshinomi.com/shrines/atago");
+    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute("content")).toBe("https://jinja-meshinomi.com/shrines/atago");
 
     applyHeadTags(pageHeadTags({ title: "ページが見つかりません", noindex: true }, "/nope"));
     expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();

@@ -35,16 +35,16 @@ func TestSitemap(t *testing.T) {
 	locs := decodeSitemap(t, newMux(""), "/api/sitemap.xml")
 
 	want := []string{
-		"https://jinja-meshinomi.vercel.app/",
-		"https://jinja-meshinomi.vercel.app/shrines",
-		"https://jinja-meshinomi.vercel.app/areas",
-		"https://jinja-meshinomi.vercel.app/stations",
-		"https://jinja-meshinomi.vercel.app/features",
-		"https://jinja-meshinomi.vercel.app/logs",
-		"https://jinja-meshinomi.vercel.app/about",
-		"https://jinja-meshinomi.vercel.app/shrines/atago",
-		"https://jinja-meshinomi.vercel.app/features/career",
-		"https://jinja-meshinomi.vercel.app/logs/2026-10-24-hie",
+		"https://jinja-meshinomi.com/",
+		"https://jinja-meshinomi.com/shrines",
+		"https://jinja-meshinomi.com/areas",
+		"https://jinja-meshinomi.com/stations",
+		"https://jinja-meshinomi.com/features",
+		"https://jinja-meshinomi.com/logs",
+		"https://jinja-meshinomi.com/about",
+		"https://jinja-meshinomi.com/shrines/atago",
+		"https://jinja-meshinomi.com/features/career",
+		"https://jinja-meshinomi.com/logs/2026-10-24-hie",
 	}
 	for _, w := range want {
 		if !slices.Contains(locs, w) {
@@ -56,7 +56,7 @@ func TestSitemap(t *testing.T) {
 		t.Errorf("urls = %d, want %d", len(locs), n)
 	}
 	// 個人の保存リストは載せない
-	if slices.Contains(locs, "https://jinja-meshinomi.vercel.app/saved") {
+	if slices.Contains(locs, "https://jinja-meshinomi.com/saved") {
 		t.Error("/saved が入っている")
 	}
 }
