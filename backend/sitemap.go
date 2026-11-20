@@ -13,7 +13,7 @@ import (
 // 各データの Unlisted を true にすると、そのページだけ外せる。
 
 // defaultSiteURL はフロントの公開 URL。SITE_URL で上書きできる（独自ドメインに移したときなど）。
-const defaultSiteURL = "https://jinja-meshinomi.vercel.app"
+const defaultSiteURL = "https://jinja-meshinomi.com"
 
 // sitemap に載せる固定ページ（トップと一覧系）
 var sitemapStaticPaths = []string{"/", "/shrines", "/areas", "/stations", "/features", "/logs", "/about"}

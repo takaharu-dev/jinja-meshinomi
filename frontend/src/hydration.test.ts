@@ -3,7 +3,7 @@ import { createMemoryRouter, createStaticHandler } from "react-router";
 import { acceptPrerenderedData, isStaleUrl, staleCheckScript, type PrerenderedWindow } from "./hydration";
 import { routes } from "./router";
 
-const ORIGIN = "https://jinja-meshinomi.vercel.app";
+const ORIGIN = "https://jinja-meshinomi.com";
 
 afterEach(() => {
   vi.unstubAllGlobals();
